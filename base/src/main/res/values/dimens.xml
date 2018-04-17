@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="font1">1sp</dimen>
+    <dimen name="font2">2sp</dimen>
+    <dimen name="font3">3sp</dimen>
+    <dimen name="font4">4sp</dimen>
+    <dimen name="font5">5sp</dimen>
+    <dimen name="font6">6sp</dimen>
+    <dimen name="font7">7sp</dimen>
+    <dimen name="font8">8sp</dimen>
+    <dimen name="font9">9sp</dimen>
+    <dimen name="font10">10sp</dimen>
+    <dimen name="font11">11sp</dimen>
+    <dimen name="font12">12sp</dimen>
+    <dimen name="font13">13sp</dimen>
+    <dimen name="font14">14sp</dimen>
+    <dimen name="font15">15sp</dimen>
+    <dimen name="font16">16sp</dimen>
+    <dimen name="font17">17sp</dimen>
+    <dimen name="font18">18sp</dimen>
+    <dimen name="font19">19sp</dimen>
+    <dimen name="font20">20sp</dimen>
+    <dimen name="font21">21sp</dimen>
+    <dimen name="font22">22sp</dimen>
+    <dimen name="font23">23sp</dimen>
+    <dimen name="font24">24sp</dimen>
+    <dimen name="font25">25sp</dimen>
+    <dimen name="font26">26sp</dimen>
+
+    <dimen name="base_titleTextSize">@dimen/font18</dimen>
+    <dimen name="base_actionBarSize">46dp</dimen>
+</resources>

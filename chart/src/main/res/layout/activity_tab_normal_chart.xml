@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/base_toolbar" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.mobcb.base.view.PagerSlidingTabStrip
+                android:id="@+id/indicator"
+                android:layout_width="match_parent"
+                android:layout_height="42.5dp"
+                android:background="#fff"
+                app:indicatorWidth="42.5dp"
+                app:pstsDividerColor="#00ffffff"
+                app:pstsDividerPadding="0dp"
+                app:pstsIndicatorColor="#00ffffff"
+                app:pstsIndicatorHeight="1dp"
+                app:pstsUnderlineColor="#00ffffff"
+                app:pstsUnderlineHeight="0dp"
+                app:selectedTabTextColor="#000"
+                app:tabTextBold="true"
+                app:tabTextColor="#B6B0B0"
+                app:tabTextSize="14sp"
+                app:tab_text_color="#B6B0B0" />
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#fff" />
+
+        </LinearLayout>
+
+        <include layout="@layout/layout_chart_time_select" />
+
+    </FrameLayout>
+
+</LinearLayout>

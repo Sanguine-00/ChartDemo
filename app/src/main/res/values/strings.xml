@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">图表Demo</string>
+    <string name="app_server_error">服务异常</string>
+    <string name="app_make_sure">确定</string>
+    <string name="app_cancel">取消</string>
+    <string name="app_exit_tip">是否退出应用?</string>
+    <!--启动页-->
+    <string name="app_no_network">网络无法连接</string>
+    <string name="app_start_no_network_text">请确保您的网络连接正常，并且能够正常访问商管助手服务器！</string>
+    <string name="app_start_no_network_button_cancel">退出程序</string>
+    <string name="app_start_no_network_button_sure">重试一次</string>
+    <string name="app_permission_failed">权限获取失败</string>
+    <string name="app_register_device_failed">设备注册失败</string>
+
+    <!--登录页-->
+    <string name="app_input_account">请输入您的账号</string>
+    <string name="app_input_password">请输入您的密码</string>
+    <string name="app_input_vcode">请输入验证码</string>
+    <string name="app_login">登录</string>
+    <string name="app_login_get_captcha_failed">验证码获取失败，请重试</string>
+    <string name="app_login_failed">登录失败</string>
+    <string name="app_login_need_name">未填写用户名</string>
+    <string name="app_login_need_password">未填写密码</string>
+    <string name="app_login_need_code">未填写验证码</string>
+
+    <!--设置页-->
+    <string name="app_head_img">头像</string>
+    <string name="app_change_pwd">修改密码</string>
+    <string name="app_check_update">检测更新</string>
+    <string name="app_clear_cache">清除缓存</string>
+    <string name="app_exit_login">退出登录</string>
+    <string name="app_setting_title">设置</string>
+    <string name="app_setting_exit_login_tip">确认退出登录吗?</string>
+    <string name="app_setting_clear_cache_tip">是否清除缓存?</string>
+
+    <!--修改密码页-->
+    <string name="app_change_pwd_null_tip_old">未输入原密码</string>
+    <string name="app_change_pwd_null_tip_new">未输入新密码</string>
+    <string name="app_change_pwd_null_tip_new2">请再次输入新密码</string>
+    <string name="app_change_pwd_null_tip_not_same">两次输入的新密码不一致</string>
+    <string name="app_change_pwd_success">密码修改成功,请重新登录!</string>
+</resources>

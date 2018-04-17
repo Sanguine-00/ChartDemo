@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/title_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/top_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="invisible" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="46dp">
+
+            <ImageView
+                android:id="@+id/iv_toolbar_left_icon"
+                android:layout_width="@dimen/base_actionBarSize"
+                android:layout_height="@dimen/base_actionBarSize"
+                android:layout_centerVertical="true"
+                android:padding="14dp"
+                android:scaleType="fitCenter"
+                tools:src="@drawable/base_ic_black_back" />
+
+            <TextView
+                android:id="@+id/tv_toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:singleLine="true"
+                android:textColor="@color/base_titleTextColor"
+                android:textSize="@dimen/base_titleTextSize"
+                tools:text="标题" />
+
+            <ImageView
+                android:id="@+id/iv_toolbar_right_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/base_actionBarSize"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:adjustViewBounds="true"
+                android:padding="14dp"
+                android:scaleType="fitXY" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_toolbar_shadow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#33928d7f" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#1A928d7f" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

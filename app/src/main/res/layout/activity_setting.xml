@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.mobcb.chartdemo.manager.activity.SettingActivity">
+
+    <include layout="@layout/base_toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/app_page_default_bg"
+        android:orientation="vertical">
+
+
+        <RelativeLayout
+            android:id="@+id/app_setting_rl_head_img"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/app_white"
+            android:clickable="true"
+            android:gravity=""
+            android:minHeight="@dimen/app_item_height"
+            android:paddingBottom="8dp"
+            android:paddingLeft="@dimen/app_horizontal_space"
+            android:paddingRight="@dimen/app_horizontal_space"
+            android:paddingTop="8dp">
+
+            <TextView
+                android:id="@+id/app_setting_tv_head_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:clickable="false"
+                android:text="@string/app_head_img"
+                android:textColor="@color/app_text_content"
+                android:textSize="@dimen/app_text_default_size" />
+
+            <ImageView
+                android:id="@+id/no_need_instantiate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5.0dip"
+                android:clickable="false"
+                android:src="@drawable/app_icon_right_arrow" />
+
+            <com.mobcb.base.view.MyImageView
+                android:id="@+id/app_setting_iv_head_img"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/no_need_instantiate"
+                android:clickable="false" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/app_setting_tv_change_password"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/app_item_height"
+            android:layout_marginTop="1dp"
+            android:background="#ffffff"
+            android:drawableRight="@drawable/app_icon_right_arrow"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="@dimen/app_horizontal_space"
+            android:paddingRight="@dimen/app_horizontal_space"
+            android:text="@string/app_change_pwd"
+            android:textColor="@color/app_text_content"
+            android:textSize="@dimen/app_text_default_size" />
+
+        <TextView
+            android:id="@+id/app_setting_tv_check_update"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/app_item_height"
+            android:layout_marginTop="30dp"
+            android:background="@color/app_white"
+            android:gravity="center"
+            android:text="@string/app_check_update"
+            android:textColor="@color/app_text_content"
+            android:textSize="@dimen/font15"
+            android:visibility="visible" />
+
+        <RelativeLayout
+            android:id="@+id/app_setting_rl_clear_cache"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/app_item_height"
+            android:layout_marginTop="@dimen/app_vertical_space"
+            android:background="#ffffff"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/app_horizontal_space"
+            android:paddingRight="@dimen/app_horizontal_space">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:gravity="left|center_vertical"
+                android:text="@string/app_clear_cache"
+                android:textColor="@color/app_text_content"
+                android:textSize="@dimen/app_text_default_size" />
+
+            <TextView
+                android:id="@+id/app_setting_tv_cache"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:drawablePadding="5dp"
+                android:drawableRight="@drawable/app_icon_right_arrow"
+                android:gravity="center"
+                android:textColor="@color/app_text_content"
+                android:textSize="@dimen/app_text_default_size"
+                tools:text="0KB" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/app_setting_tv_exit_login"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/app_item_height"
+            android:layout_marginTop="@dimen/app_vertical_space"
+            android:background="#ffffff"
+            android:gravity="center"
+            android:text="@string/app_exit_login"
+            android:textColor="@color/app_text_content"
+            android:textSize="@dimen/app_text_default_size" />
+    </LinearLayout>
+</LinearLayout>

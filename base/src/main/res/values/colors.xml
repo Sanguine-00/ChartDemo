@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--透明色-->
+    <color name="base_transparent">#00000000</color>
+    <!--黑色-->
+    <color name="base_black">#000000</color>
+    <!--白色-->
+    <color name="base_white">#FFFFFF</color>
+
+    <!--Title文字颜色-->
+    <color name="base_titleTextColor">@color/base_black</color>
+</resources>

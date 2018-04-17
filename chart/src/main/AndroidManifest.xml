@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.mobcb.chart">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application>
+        <activity
+            android:name=".activity.ChartMainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.mobcb.chart.activity.NormalChartListActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activity.OverlayNormalChartActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".activity.TabNormalChartActivity"
+            android:screenOrientation="landscape" />
+        <!--<activity-->
+        <!--android:name=".activity.NormalChartListActivity"-->
+        <!--android:screenOrientation="landscape" />-->
+    </application>
+
+
+</manifest>

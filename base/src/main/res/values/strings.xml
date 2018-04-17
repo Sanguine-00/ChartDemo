@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">base</string>
+    <string name="string_publickey_failure">获取PublicKey失败</string>
+    <string name="base_login_failure_all">当前会话已失效，请重新登录</string>
+</resources>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/chart_ll_time_select"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:background="#f6f6f6"
+    android:orientation="vertical"
+    android:visibility="gone">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center_vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:text="@string/chart_time_start"
+                android:textColor="@color/base_black"
+                android:textSize="@dimen/font14" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:text="@string/chart_time_end"
+                android:textColor="@color/base_black"
+                android:textSize="@dimen/font14" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical"
+            android:paddingLeft="20dp">
+
+            <TextView
+                android:id="@+id/chart_tv_time_start"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:textColor="@color/base_black"
+                android:textSize="@dimen/font14"
+                tools:text="@string/chart_time_start" />
+
+            <TextView
+                android:id="@+id/chart_tv_time_end"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:textColor="@color/base_black"
+                android:textSize="@dimen/font14"
+                tools:text="@string/chart_time_end" />
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/chart_btn_time_select"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/chart_shape_time_select_bg"
+            android:text="@string/chart_search"
+            android:textColor="@color/base_black"
+            android:textSize="@dimen/font14" />
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_title"
+        style="@style/dialogTitleStyle"
+        android:visibility="gone"
+        tools:text="标题" />
+
+    <TextView
+        android:id="@+id/tv_content"
+        style="@style/dialogContentStyle"
+        tools:text="内容" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dialog_buttonHeight">
+
+        <Button
+            android:id="@+id/btn_left"
+            style="@style/dialogButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            tools:text="确定" />
+
+        <Button
+            android:id="@+id/btn_middle"
+            style="@style/dialogButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            tools:text="取消" />
+
+        <Button
+            android:id="@+id/btn_right"
+            style="@style/dialogButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            tools:text="忽略" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

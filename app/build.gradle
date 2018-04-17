@@ -1,0 +1,81 @@
+apply plugin: 'com.android.application'
+
+def buildTime() {
+    def date = new Date()
+    def formattedDate = date.format('yyyyMMddHHmmss')
+    return formattedDate
+}
+
+android {
+    compileSdkVersion 26
+    defaultConfig {
+        applicationId "com.mobcb.chartdemo.manager"
+        minSdkVersion 15
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+
+        // Enabling multidex support.
+        multiDexEnabled true
+        ndk {
+            abiFilters "armeabi", 'armeabi-v8a', "armeabi-v7a", "x86"
+        }
+    }
+    dexOptions {
+        preDexLibraries false
+        javaMaxHeapSize "6g"   //这个改大
+    }
+
+    //签名
+    signingConfigs {
+        releaseConfig {
+            storeFile file("zhenghongcheng-bm.jks")      //签名文件
+            storePassword "zaq1cde3"
+            keyAlias "正弘城商管"
+            keyPassword "zaq1cde3"  //签名密码
+        }
+        debug {
+//            storeFile file("debug.keystore")
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.releaseConfig//设置签名信息
+            applicationVariants.all { variant ->    //批量修改Apk名字
+                variant.outputs.all { output ->
+                    if (!variant.buildType.isDebuggable()) {
+                        //获取签名的名字 variant.signingConfig.name
+                        //要被替换的源字符串
+                        def sourceFile = "-${variant.flavorName}-${variant.buildType.name}"
+                        //替换的字符串
+                        def replaceFile = "_V${variant.versionName}_${variant.flavorName}_${variant.buildType.name}_${buildTime()}"
+                        outputFileName = output.outputFile.name.replace(sourceFile, replaceFile);
+                        //遗留问题：如何获取当前module的name，如CodeBooke这个名字怎么获取到
+                    }
+                }
+            }
+        }
+    }
+    lintOptions {
+        abortOnError false
+    }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+    useLibrary 'org.apache.http.legacy'
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':base')
+    implementation project(':chart')
+    implementation project(':dialog')
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+}

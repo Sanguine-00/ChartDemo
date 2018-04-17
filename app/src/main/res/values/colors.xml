@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="app_white">#ffffff</color>
+    <color name="app_text_content">#000000</color>
+    <color name="app_text_hint">#C8C8C8</color>
+    <color name="app_page_default_bg">#f6f6f6</color>
+    <color name="app_divider">#e6e6e6</color>
+    <color name="app_change_pwd_bg">#49000000</color>
+</resources>

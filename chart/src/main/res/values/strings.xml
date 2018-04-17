@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">chart</string>
+    <string name="chart_server_error">服务异常</string>
+    <string name="chart_title">图表</string>
+    <string name="chart_select_time">筛选</string>
+    <string name="chart_time_start">开始时间</string>
+    <string name="chart_time_end">结束时间</string>
+    <string name="chart_cancel">取消</string>
+    <string name="chart_sure">确认</string>
+    <string name="chart_year">年</string>
+    <string name="chart_month">月</string>
+    <string name="chart_day">日</string>
+    <string name="chart_hour">时</string>
+    <string name="chart_min">分</string>
+    <string name="chart_sec">秒</string>
+    <string name="chart_search">查询</string>
+    <string name="chart_time_error">时间选择有误</string>
+    <string name="chart_list">图表列表</string>
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dialog_buttonHeight">40dp</dimen>
+
+
+    <dimen name="dialog_titleTextSize">15sp</dimen>
+    <dimen name="dialog_contentTextSize">14sp</dimen>
+    <dimen name="dialog_buttonTextSize">14sp</dimen>
+</resources>
