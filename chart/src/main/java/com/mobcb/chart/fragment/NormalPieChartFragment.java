@@ -11,15 +11,21 @@ import android.view.ViewGroup;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.mobcb.chart.ChartColorHelper;
+import com.mobcb.chart.ChartConstants;
+import com.mobcb.chart.PieChartFormatter;
 import com.mobcb.chart.R;
 import com.mobcb.chart.bean.ChartDataListBean;
 import com.mobcb.chart.bean.ChartDetailBean;
 import com.mobcb.chart.bean.ChartEventBusBean;
-import com.mobcb.chart.view.MyMarkerView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -32,13 +38,13 @@ import java.util.Map;
 /**
  * 饼图碎片
  */
-public class NormalPieChartFragment extends BaseNormalFragment {
+public class NormalPieChartFragment extends BaseNormalFragment implements OnChartValueSelectedListener {
     private PieChart mChart;
     private String childId;//子图的id
     private String format;
+    private PercentFormatter formatter = new PercentFormatter();
 
     public NormalPieChartFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -88,7 +94,6 @@ public class NormalPieChartFragment extends BaseNormalFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         mRoot = inflater.inflate(R.layout.fragment_normal_pie_chart, container, false);
         getArg();
         initView(mRoot);
@@ -100,30 +105,28 @@ public class NormalPieChartFragment extends BaseNormalFragment {
         mChart = (PieChart) mRoot.findViewById(R.id.chart);
 
         //使用百分比
-        mChart.setUsePercentValues(true);
+        mChart.setUsePercentValues(false);
+
         //隐藏描述
         mChart.getDescription().setEnabled(false);
         //设置图表偏移
-        mChart.setExtraOffsets(5, 10, 5, 5);
+        mChart.setExtraOffsets(5, 5, 5, 5);
         //设置摩擦系数
         mChart.setDragDecelerationFrictionCoef(0.95f);
         //设置是否中间空间
-        mChart.setDrawHoleEnabled(false);
-        //设置中间空间的颜色
-//        mChart.setHoleColor(Color.WHITE);
-        //设置中间空间占整个图的百分比
-        mChart.setHoleRadius(58f);
+        mChart.setDrawHoleEnabled(true);
 
-        //设置透明圆的颜色
-        mChart.setTransparentCircleColor(Color.WHITE);
-        //设置透明圆的透明度
-        mChart.setTransparentCircleAlpha(110);
-        //设置透明圆所占这个图的百分比
-        mChart.setTransparentCircleRadius(61f);
+        //设置中间空间的颜色
+        mChart.setHoleColor(Color.TRANSPARENT);
+        //设置中间空间占整个图的百分比
+        mChart.setHoleRadius(68f);
 
         //设置是否绘制中间文本
         mChart.setDrawCenterText(true);
-
+        mChart.setOnChartValueSelectedListener(this);
+        mChart.setCenterTextSizePixels(getResources().getDimension(R.dimen.font20));
+        mChart.setCenterTextColor(getResources().getColor(R.color.chart_text));
+        mChart.setCenterTextRadiusPercent(50f);
 
         //设置旋转度数
         mChart.setRotationAngle(0);
@@ -132,15 +135,10 @@ public class NormalPieChartFragment extends BaseNormalFragment {
         //设置选中是否高亮
         mChart.setHighlightPerTapEnabled(true);
 
+        mChart.setBackgroundColor(getResources().getColor(R.color.chart_bg));
+
         //设置动画时间
-        mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
-
-        //设置标注
-        MyMarkerView mv = new MyMarkerView(mActivity, R.layout.custom_marker_view);
-        mv.setChartView(mChart); // For bounds control
-        mChart.setMarker(mv); // Set the marker to the chart
-
-
+        mChart.animateY(1000, Easing.EasingOption.EaseInOutQuad);
     }
 
     @Override
@@ -163,28 +161,76 @@ public class NormalPieChartFragment extends BaseNormalFragment {
                     //设置是否绘制图标
                     dataSet.setDrawIcons(false);
                     //设置颜色集
-                    dataSet.setColors(getColors(3));
+                    dataSet.setColors(ChartColorHelper.getColors(getContext()));
                     //设置饼之间的间距
-                    dataSet.setSliceSpace(3f);
+                    dataSet.setSliceSpace(0f);
                     //设置选中突出的偏移
-                    dataSet.setSelectionShift(5f);
-                    //设置文本在外部
+                    dataSet.setSelectionShift(10f);
+
+                    //设置y文本在外部
                     dataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
-                    //设置文本中第一段线的长度
-                    dataSet.setValueLinePart1Length(1f);
+                    //设置x文本在外部
+                    dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+                    //设置指示线中第一段线的长度
+                    dataSet.setValueLinePart1Length(0.2f);
+                    //设置指示线的颜色
+                    dataSet.setValueLineColor(getResources().getColor(R.color.chart_text));
                     PieData data = new PieData(dataSet);
-                    //设置值的格式为百分比
-                    data.setValueFormatter(new PercentFormatter());
+                    //设置值的格式为百分比;
+                    data.setValueFormatter(new PieChartFormatter(getContext(), data.getYValueSum()));
                     //设置文本字体大小
-                    data.setValueTextSize(11f);
+                    data.setValueTextSize(ChartConstants.CHART_TEXT_SIZE_DP);
                     //设置文本颜色
-                    data.setValueTextColor(Color.BLACK);
+                    data.setValueTextColor(getResources().getColor(R.color.chart_text));
+
+                    //设置数据
                     mChart.setData(data);
+
+                    //图例设置
+                    Legend l = mChart.getLegend();
+
+                    //设置图例的左边标志为圆点
+                    l.setForm(Legend.LegendForm.CIRCLE);
+                    //设置图例中文本字体大小
+                    l.setTextSize(ChartConstants.CHART_TEXT_SIZE_DP);
+                    //设置图例中文本颜色
+                    l.setTextColor(getResources().getColor(R.color.chart_text));
+                    //设置图例位置
+                    l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+                    l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+                    l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+                    //设置是否在图表中绘制
+                    l.setDrawInside(false);
+
+                    //偏移设置
+                    l.setYOffset(5f);
+                    l.setXOffset(0f);
+                    l.setYEntrySpace(0f);
+                    l.setTextSize(ChartConstants.CHART_TEXT_SIZE_DP);
+
+                    //设置label的样式
+                    mChart.setEntryLabelColor(getResources().getColor(R.color.chart_text));
+                    mChart.setEntryLabelTextSize(ChartConstants.CHART_TEXT_SIZE_DP);
+
                     // undo all highlights
                     mChart.highlightValues(null);
+
                     mChart.invalidate();
                 }
             }
         }
+    }
+
+    @Override
+    public void onValueSelected(Entry e, Highlight h) {
+        if (e != null) {
+            float value = e.getY() / mChart.getData().getYValueSum() * 100f;
+            mChart.setCenterText(formatter.getFormattedValue(value, e, 0, null));
+        }
+    }
+
+    @Override
+    public void onNothingSelected() {
+        mChart.setCenterText("");
     }
 }

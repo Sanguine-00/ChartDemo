@@ -20,4 +20,13 @@ public class ChartColorHelper {
         }
         return Color.parseColor("#00000000");
     }
+
+    public static @ColorInt
+    int[] getColors(Context context) {
+        if (context != null) {
+            int[] colors = context.getResources().getIntArray(R.array.chart_content);
+            return colors;
+        }
+        return null;
+    }
 }

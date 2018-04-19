@@ -3,6 +3,7 @@ package com.mobcb.chart.view;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.Shape;
 import android.widget.TextView;
@@ -23,14 +24,14 @@ import com.mobcb.chart.bean.ChartColorName;
  *
  * @author Philipp Jahoda
  */
-public class LineMarkerView extends MarkerView {
+public class BarMarkerView extends MarkerView {
 
     private TextView mTvChartYValue;
     private TextView mTvChartLineName;
     private TextView mTvChartXValue;
     private IAxisValueFormatter formatter;
 
-    public LineMarkerView(Context context, int layoutResource, IAxisValueFormatter formatter) {
+    public BarMarkerView(Context context, int layoutResource, IAxisValueFormatter formatter) {
         super(context, layoutResource);
         this.formatter = formatter;
         mTvChartYValue = (TextView) findViewById(R.id.chart_y_value);
@@ -71,7 +72,11 @@ public class LineMarkerView extends MarkerView {
                     paint.setStrokeWidth(2);
                     //设置是否为空心
                     paint.setStyle(Paint.Style.FILL);
-                    canvas.drawCircle(0, 0, UnitUtils.dip2px(getContext(), 4), paint);
+                    Rect rect = new Rect(0,
+                            0,
+                            UnitUtils.dip2px(getContext(), 4),
+                            UnitUtils.dip2px(getContext(), 4));
+                    canvas.drawRect(rect, paint);
                 }
             };
             shape.resize(UnitUtils.dip2px(getContext(), 5), UnitUtils.dip2px(getContext(), 5));

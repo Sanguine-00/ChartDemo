@@ -19,11 +19,14 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.mobcb.base.util.ScreenUtils;
+import com.mobcb.chart.ChartColorHelper;
+import com.mobcb.chart.ChartConstants;
 import com.mobcb.chart.R;
+import com.mobcb.chart.bean.ChartColorName;
 import com.mobcb.chart.bean.ChartDataListBean;
 import com.mobcb.chart.bean.ChartDetailBean;
 import com.mobcb.chart.bean.ChartEventBusBean;
-import com.mobcb.chart.view.MyMarkerView;
+import com.mobcb.chart.view.BarMarkerView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -114,14 +117,11 @@ public class NormalBarChartFragment extends BaseNormalFragment {
         mChart.setDrawBarShadow(false);
         //是否绘制网格
         mChart.setDrawGridBackground(false);
-
-        //标注设置
-        MyMarkerView mv = new MyMarkerView(mActivity, R.layout.custom_marker_view);
-        mv.setChartView(mChart); // For bounds control
-        mChart.setMarker(mv); // Set the marker to the chart
+        //设置背景色
+        mChart.setBackgroundColor(getResources().getColor(R.color.chart_bg));
 
         //动画时间
-        mChart.animateXY(1000, 1000);
+        mChart.animateXY(100, 100);
 
         //组间 间距
         float groupSpace = 0.08f;
@@ -164,12 +164,17 @@ public class NormalBarChartFragment extends BaseNormalFragment {
                         if (chartDataListBean != null) {
                             xDesc.add(i, chartDataListBean.getXDesc());
                             yDesc.add(chartDetailBean.getTitle());
-                            entries.add(new BarEntry(chartDataListBean.getXValue(), chartDataListBean.getYValue(), chartDetailBean.getTitle()));
+                            ChartColorName colorName = new ChartColorName();
+                            colorName.setColor(ChartColorHelper.getColorByIndex(getContext(), j));
+                            colorName.setName(chartDetailBean.getTitle());
+                            entries.add(new BarEntry(chartDataListBean.getXValue(), chartDataListBean.getYValue(), colorName));
                         }
                     }
                 }
                 BarDataSet barDataSet = new BarDataSet(entries, chartDetailBean.getTitle());
-                barDataSet.setColor(getColors(j).get(0));
+                barDataSet.setColor(ChartColorHelper.getColorByIndex(getContext(), j));
+                barDataSet.setValueTextColor(getResources().getColor(R.color.chart_text));
+                barDataSet.setValueTextSize(ChartConstants.CHART_TEXT_SIZE_DP);
                 barDataSets.add(barDataSet);
             }
             if (count > 0) {
@@ -224,25 +229,33 @@ public class NormalBarChartFragment extends BaseNormalFragment {
 
         // 图例显示设置
         Legend l = mChart.getLegend();
+        //设置图例的左边标志为圆点
+        l.setForm(Legend.LegendForm.SQUARE);
+        //设置图例中文本字体大小
+        l.setTextSize(ChartConstants.CHART_TEXT_SIZE_DP);
+        //设置图例中文本颜色
+        l.setTextColor(getResources().getColor(R.color.chart_text));
         //设置图例位置
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-        l.setOrientation(Legend.LegendOrientation.VERTICAL);
-        //是否在图中绘制
-        l.setDrawInside(true);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        //设置是否在图表中绘制
+        l.setDrawInside(false);
+
 
         //偏移设置
         l.setYOffset(0f);
         l.setXOffset(10f);
         l.setYEntrySpace(0f);
-        l.setTextSize(8f);
+        l.setTextSize(ChartConstants.CHART_TEXT_SIZE_DP);
 
         //X轴设置
         XAxis xAxis = mChart.getXAxis();
         //设置刻度为1
         xAxis.setGranularity(1f);
-        //设置x轴格式
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(xDesc));
+        //设置x轴label格式
+        IndexAxisValueFormatter formatter = new IndexAxisValueFormatter(xDesc);
+        xAxis.setValueFormatter(formatter);
         //设置起始值
         if (chartList != null && chartList.size() > 1) {
             xAxis.setAxisMinimum(0f);
@@ -264,22 +277,30 @@ public class NormalBarChartFragment extends BaseNormalFragment {
         //设置不绘制纵线
         xAxis.setDrawGridLines(false);
         //设置旋转角度
-        xAxis.setLabelRotationAngle(-45);
-        //设置label的数量
-        xAxis.setLabelCount((int) maxX);
+        xAxis.setLabelRotationAngle(0);
+        //设置字体
+        xAxis.setTextColor(getResources().getColor(R.color.chart_text));
+        xAxis.setTextSize(ChartConstants.CHART_TEXT_SIZE_DP);
 
-        //左边Y轴设置
+        //设置Y轴参数
         YAxis leftAxis = mChart.getAxisLeft();
-        //格式化显示
-        leftAxis.setValueFormatter(new LargeValueFormatter());
-        //不绘制横线
-        leftAxis.setDrawGridLines(false);
-        //上部保留空间
-        leftAxis.setSpaceTop(35f);
-        //y起始值
+        //设置Y轴字体颜色
+        leftAxis.setTextColor(getResources().getColor(R.color.chart_text));
+        //设置Y轴字体大小
+        leftAxis.setTextSize(ChartConstants.CHART_TEXT_SIZE_DP);
+        //设置是否绘制横线
+        leftAxis.setDrawGridLines(true);
+        //设置是否绘制纵坐标的轴
+        leftAxis.setDrawAxisLine(false);
+        //设置纵坐标最小值
         leftAxis.setAxisMinimum(0f);
-        //隐藏右边Y轴
-        mChart.getAxisRight().setEnabled(false);
+        //设置value的格式
+        leftAxis.setValueFormatter(new LargeValueFormatter());
+
+        //设置标注
+        BarMarkerView mv = new BarMarkerView(mActivity, R.layout.layout_line_chart_marker_view, formatter);
+        mv.setChartView(mChart); // For bounds control
+        mChart.setMarker(mv); // Set the marker to the chart
     }
 
 

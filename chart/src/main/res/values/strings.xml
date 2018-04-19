@@ -16,7 +16,5 @@
     <string name="chart_search">查询</string>
     <string name="chart_time_error">时间选择有误</string>
     <string name="chart_list">图表列表</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="chart_pie_value_formatter">数量: %s \n占比: %s</string>
 </resources>

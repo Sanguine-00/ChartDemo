@@ -16,6 +16,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.mobcb.chart.ChartColorHelper;
 import com.mobcb.chart.ChartConstants;
 import com.mobcb.chart.R;
@@ -156,7 +157,7 @@ public class NormalLineChartFragment extends BaseNormalFragment {
                                 maxY = chartDataListBean.getYValue() > maxY ? chartDataListBean.getYValue() : maxY;
                                 ChartColorName colorName = new ChartColorName();
                                 colorName.setColor(ChartColorHelper.getColorByIndex(mActivity, i));
-                                colorName.setName(chartDetailBean.getName());
+                                colorName.setName(chartDetailBean.getTitle());
                                 yValues.add(new Entry(chartDataListBean.getXValue(),
                                         chartDataListBean.getYValue(),
                                         colorName));
@@ -212,6 +213,12 @@ public class NormalLineChartFragment extends BaseNormalFragment {
         //设置是否在图表中绘制
         l.setDrawInside(false);
 
+        //偏移设置
+        l.setYOffset(0f);
+        l.setXOffset(10f);
+        l.setYEntrySpace(0f);
+        l.setTextSize(ChartConstants.CHART_TEXT_SIZE_DP);
+
         //X轴设置
         XAxis xAxis = mChart.getXAxis();
         //X轴中文本字体大小(dp)
@@ -237,6 +244,10 @@ public class NormalLineChartFragment extends BaseNormalFragment {
         xAxis.setValueFormatter(formatter);
         //设置旋转角度
         xAxis.setLabelRotationAngle(0f);
+        //高度偏移
+        xAxis.setYOffset(10);
+        //避免首尾显示不全
+        xAxis.setAvoidFirstLastClipping(true);
         //居中
         xAxis.setCenterAxisLabels(false);
         //设置网格颜色
@@ -255,6 +266,8 @@ public class NormalLineChartFragment extends BaseNormalFragment {
         leftAxis.setDrawAxisLine(false);
         //设置纵坐标最小值
         leftAxis.setAxisMinimum(0f);
+        //设置value的格式
+        leftAxis.setValueFormatter(new LargeValueFormatter());
 
         //隐藏右边Y轴
         mChart.getAxisRight().setEnabled(false);

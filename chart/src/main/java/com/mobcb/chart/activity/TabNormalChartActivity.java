@@ -80,8 +80,8 @@ public class TabNormalChartActivity extends BaseChartActivity implements View.On
     protected void initTitle(String titleText) {
         ToolbarHelper.instance().init(mActivity, null)
                 .setTitle(titleText)
-                .setTitleColor(Color.BLACK)
-                .setBackgroundColor(Color.TRANSPARENT)
+                .setTitleColor(getResources().getColor(R.color.chart_title_text))
+                .setBackgroundColor(getResources().getColor(R.color.chart_title_bg))
                 .setLeft(com.mobcb.base.R.drawable.base_ic_black_back, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
