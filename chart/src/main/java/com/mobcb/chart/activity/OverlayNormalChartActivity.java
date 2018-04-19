@@ -1,6 +1,5 @@
 package com.mobcb.chart.activity;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -44,8 +43,8 @@ public class OverlayNormalChartActivity extends BaseChartActivity implements Vie
     protected void initTitle(String titleText) {
         ToolbarHelper.instance().init(mActivity, null)
                 .setTitle(titleText)
-                .setTitleColor(Color.BLACK)
-                .setBackgroundColor(Color.TRANSPARENT)
+                .setTitleColor(getResources().getColor(R.color.chart_title_text))
+                .setBackgroundColor(getResources().getColor(R.color.chart_title_bg))
                 .setLeft(com.mobcb.base.R.drawable.base_ic_black_back, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

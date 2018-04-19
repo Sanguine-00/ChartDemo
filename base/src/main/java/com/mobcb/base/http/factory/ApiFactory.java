@@ -137,6 +137,7 @@ public class ApiFactory {
                         requestBody.writeTo(buffer);
 //                        queryMap.put(Sign.BODY, buffer.readUtf8());
                     }
+
                     buffer.close();
                 }
                 //queryString加签名等固定参数

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="chart_text">#889299</color>
+    <color name="chart_bg">#232729</color>
+    <color name="chart_title_text">#EEF2F5</color>
+    <color name="chart_title_bg">#2C3133</color>
+    <color name="chart_marker_bg">#E51B1F21</color>
+    <color name="chart_grid_color">#303538</color>
+
+    <!--线条/柱子/饼的颜色取值范围-->
+    <array name="chart_content">
+        <item>#FF4E4E</item>
+        <item>#FFD12B</item>
+        <item>#02EDCE</item>
+        <item>#02CCFC</item>
+        <item>#F328F3</item>
+        <item>#F79032</item>
+        <item>#33C8E7</item>
+        <item>#9631F2</item>
+    </array>
+</resources>

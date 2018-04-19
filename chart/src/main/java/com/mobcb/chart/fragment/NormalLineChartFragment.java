@@ -2,7 +2,6 @@ package com.mobcb.chart.fragment;
 
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -17,12 +16,14 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
+import com.mobcb.chart.ChartColorHelper;
+import com.mobcb.chart.ChartConstants;
 import com.mobcb.chart.R;
+import com.mobcb.chart.bean.ChartColorName;
 import com.mobcb.chart.bean.ChartDataListBean;
 import com.mobcb.chart.bean.ChartDetailBean;
 import com.mobcb.chart.bean.ChartEventBusBean;
-import com.mobcb.chart.view.MyMarkerView;
+import com.mobcb.chart.view.LineMarkerView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -102,15 +103,12 @@ public class NormalLineChartFragment extends BaseNormalFragment {
 
     private void initView(View mView) {
         mChart = (LineChart) mView.findViewById(R.id.chart);
+
     }
 
     @Override
     protected void dealWithChartBean(List<ChartDetailBean> chartList) {
 
-        //设置标注
-        MyMarkerView mv = new MyMarkerView(mActivity, R.layout.custom_marker_view);
-        mv.setChartView(mChart); // For bounds control
-        mChart.setMarker(mv); // Set the marker to the chart
         //隐藏描述
         mChart.getDescription().setEnabled(false);
         mChart.getDescription().setText("");
@@ -128,7 +126,7 @@ public class NormalLineChartFragment extends BaseNormalFragment {
         //设置是否支持双指缩放
         mChart.setPinchZoom(true);
         // set an alternative background color
-        mChart.setBackgroundColor(Color.WHITE);
+        mChart.setBackgroundColor(getResources().getColor(R.color.chart_bg));
         if (chartList != null && !chartList.isEmpty()) {
             //如果size为1,则有可能是tab下面的
             if (chartList.size() == 1) {
@@ -156,31 +154,26 @@ public class NormalLineChartFragment extends BaseNormalFragment {
                                     xDesc.add(chartDataListBean.getXDesc());
                                 }
                                 maxY = chartDataListBean.getYValue() > maxY ? chartDataListBean.getYValue() : maxY;
+                                ChartColorName colorName = new ChartColorName();
+                                colorName.setColor(ChartColorHelper.getColorByIndex(mActivity, i));
+                                colorName.setName(chartDetailBean.getName());
                                 yValues.add(new Entry(chartDataListBean.getXValue(),
                                         chartDataListBean.getYValue(),
-                                        chartDataListBean.getXDesc()));
+                                        colorName));
                             }
                         }
                         LineDataSet set = new LineDataSet(yValues, chartDetailBean.getTitle());
-                        //设置值的文本颜色
-                        set.setValueTextColor(Color.BLACK);
-                        set.setAxisDependency(YAxis.AxisDependency.LEFT);
-                        //设置颜色集
-                        set.setColors(getColors(i));
-                        //设置圆圈的颜色
-                        set.setCircleColor(Color.YELLOW);
-                        //设置圆圈是否空心
-                        set.setDrawCircleHole(false);
-                        //设置线的粗细
+                        //设置此线条的颜色
+                        set.setColors(ChartColorHelper.getColorByIndex(mActivity, i));
+                        //是否绘制圆圈
+                        set.setDrawCircles(false);
+                        //设置线条的粗细
                         set.setLineWidth(2f);
-                        //设置圆角度数
-                        set.setCircleRadius(3f);
-                        //设置透明度
-                        set.setFillAlpha(65);
-                        //设置填充颜色
-                        set.setFillColor(ColorTemplate.getHoloBlue());
-                        //设置高亮颜色
-                        set.setHighLightColor(getColors(i).get(0));
+
+                        set.setHighLightColor(ChartColorHelper.getColorByIndex(mActivity, i));
+                        set.setDrawValues(false);
+                        //设置线条模式
+                        set.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
                         //添加数据
                         sets.add(set);
                     }
@@ -191,8 +184,8 @@ public class NormalLineChartFragment extends BaseNormalFragment {
                 lineDataSets[i] = sets.get(i);
             }
             LineData data = new LineData(lineDataSets);
-            data.setValueTextColor(Color.BLACK);
-            data.setValueTextSize(9f);
+            data.setValueTextColor(getResources().getColor(R.color.chart_text));
+            data.setValueTextSize(ChartConstants.CHART_TEXT_SIZE_DP);
             // set data
             mChart.setData(data);
             setStyle(maxX, maxY);
@@ -206,25 +199,25 @@ public class NormalLineChartFragment extends BaseNormalFragment {
         //图例设置
         Legend l = mChart.getLegend();
 
-        //设置图例的左边标志为横线
-        l.setForm(Legend.LegendForm.LINE);
+        //设置图例的左边标志为圆点
+        l.setForm(Legend.LegendForm.CIRCLE);
         //设置图例中文本字体大小
-        l.setTextSize(11f);
+        l.setTextSize(ChartConstants.CHART_TEXT_SIZE_DP);
         //设置图例中文本颜色
-        l.setTextColor(Color.BLACK);
+        l.setTextColor(getResources().getColor(R.color.chart_text));
         //设置图例位置
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
         //设置是否在图表中绘制
         l.setDrawInside(false);
 
         //X轴设置
         XAxis xAxis = mChart.getXAxis();
-        //X轴中文本字体大小
-        xAxis.setTextSize(11f);
+        //X轴中文本字体大小(dp)
+        xAxis.setTextSize(ChartConstants.CHART_TEXT_SIZE_DP);
         //X轴中文本字体颜色
-        xAxis.setTextColor(Color.BLACK);
+        xAxis.setTextColor(getResources().getColor(R.color.chart_text));
         //X轴位置
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         //是否绘制描述/标签
@@ -234,27 +227,42 @@ public class NormalLineChartFragment extends BaseNormalFragment {
         //设置刻度
         xAxis.setGranularity(1f);
         //设置X轴最小值
-        xAxis.setAxisMinimum(-0.5f);
+        xAxis.setAxisMinimum(0f);
         //设置最大值
         xAxis.setAxisMaximum(maxX);
         //设置label的数量
 //        xAxis.setLabelCount(maxX);
-        //设置格式
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(xDesc));
+        //设置label格式
+        IndexAxisValueFormatter formatter = new IndexAxisValueFormatter(xDesc);
+        xAxis.setValueFormatter(formatter);
         //设置旋转角度
-        xAxis.setLabelRotationAngle(-45);
-        //不居中
+        xAxis.setLabelRotationAngle(0f);
+        //居中
         xAxis.setCenterAxisLabels(false);
+        //设置网格颜色
+        xAxis.setGridColor(getResources().getColor(R.color.chart_grid_color));
 
 
         //设置Y轴参数
         YAxis leftAxis = mChart.getAxisLeft();
         //设置Y轴字体颜色
-        leftAxis.setTextColor(Color.BLACK);
+        leftAxis.setTextColor(getResources().getColor(R.color.chart_text));
+        //设置Y轴字体大小
+        leftAxis.setTextSize(ChartConstants.CHART_TEXT_SIZE_DP);
         //设置是否绘制横线
         leftAxis.setDrawGridLines(true);
+        //设置是否绘制纵坐标的轴
+        leftAxis.setDrawAxisLine(false);
+        //设置纵坐标最小值
+        leftAxis.setAxisMinimum(0f);
 
         //隐藏右边Y轴
         mChart.getAxisRight().setEnabled(false);
+
+
+        //设置标注
+        LineMarkerView mv = new LineMarkerView(mActivity, R.layout.layout_line_chart_marker_view, formatter);
+        mv.setChartView(mChart); // For bounds control
+        mChart.setMarker(mv); // Set the marker to the chart
     }
 }

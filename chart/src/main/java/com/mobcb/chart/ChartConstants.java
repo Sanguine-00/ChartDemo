@@ -12,4 +12,6 @@ public @interface ChartConstants {
     String CHART_DRAW_TYPE_OVERLAY = "overlay";
     String CHART_DRAW_TYPE_TAB = "tab";
 
+    float CHART_TEXT_SIZE_DP = 10F;
+
 }
