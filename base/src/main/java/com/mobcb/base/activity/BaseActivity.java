@@ -6,11 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.kaopiz.kprogresshud.KProgressHUD;
-import com.mobcb.base.mvp.BasePresenter;
-import com.mobcb.base.mvp.BaseMvpView;
 import com.mobcb.base.R;
 import com.mobcb.base.helper.ImmersionBarHelper;
 import com.mobcb.base.helper.ToolbarHelper;
+import com.mobcb.base.mvp.BaseMvpView;
+import com.mobcb.base.mvp.BasePresenter;
 import com.mobcb.base.util.KeyboardUtils;
 
 /**
@@ -19,7 +19,7 @@ import com.mobcb.base.util.KeyboardUtils;
  * 基础activity
  */
 
-public class BaseActivity<P extends BasePresenter>  extends AppCompatActivity implements BaseMvpView {
+public class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements BaseMvpView {
 
     protected AppCompatActivity mActivity;
     protected KProgressHUD mLoadingDialog;
@@ -59,7 +59,10 @@ public class BaseActivity<P extends BasePresenter>  extends AppCompatActivity im
     protected void onDestroy() {
         super.onDestroy();
         ImmersionBarHelper.destory(mActivity);
-        mPresenter.destory();
+        if (mPresenter != null) {
+            mPresenter.destory();
+            mPresenter = null;
+        }
     }
 
     protected void initTitle(String titleText) {

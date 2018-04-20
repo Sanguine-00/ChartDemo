@@ -2,9 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/chart_title_bg"
     android:orientation="vertical">
 
-    <include layout="@layout/base_toolbar" />
+    <include layout="@layout/chart_toolbar" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -15,6 +16,7 @@
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/chart_bg"
             android:orientation="vertical" />
 
         <include layout="@layout/layout_chart_time_select" />

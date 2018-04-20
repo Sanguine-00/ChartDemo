@@ -1,6 +1,5 @@
 package com.mobcb.chart.activity;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,8 +11,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.mobcb.base.helper.ImmersionBarHelper;
 import com.mobcb.base.helper.ToolbarHelper;
+import com.mobcb.base.util.ScreenUtils;
 import com.mobcb.base.util.ToastUtils;
 import com.mobcb.base.view.PagerSlidingTabStrip;
 import com.mobcb.chart.ChartConstants;
@@ -46,6 +45,7 @@ public class TabNormalChartActivity extends BaseChartActivity implements View.On
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ScreenUtils.setFullScreen(this);
         setContentView(R.layout.activity_tab_normal_chart);
         initView();
         initTitle("");
@@ -56,10 +56,11 @@ public class TabNormalChartActivity extends BaseChartActivity implements View.On
 
     }
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(EventBus.getDefault().isRegistered(this)){
+        if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
     }
@@ -67,21 +68,25 @@ public class TabNormalChartActivity extends BaseChartActivity implements View.On
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ChartEventBusBean chartEventBusBean) {
         if (chartEventBusBean != null) {
-            if(ChartEventBusBean.KEY_EVENT_BUS_SET_TIME_FORMAT.equalsIgnoreCase(chartEventBusBean.getAction())){
-                if(chartEventBusBean.getObject()!=null){
-                    setSelectable();
-                }else{
-                    setUnSelectable();
+            if (ChartEventBusBean.KEY_EVENT_BUS_SET_TIME_FORMAT.equalsIgnoreCase(chartEventBusBean.getAction())) {
+                dateFormat = chartEventBusBean.getObject() == null ? null : chartEventBusBean.getObject().toString();
+                checkSelectable();
+            } else if (ChartEventBusBean.KEY_EVENT_BUS_HIDE_TIME_SELECT.equals(chartEventBusBean.getAction())) {
+                if (mChartLlTimeSelect != null) {
+                    mChartLlTimeSelect.setVisibility(View.GONE);
+                }
+                if (mToolbarHelper != null) {
+                    mToolbarHelper.hideShadow();
                 }
             }
         }
     }
 
     protected void initTitle(String titleText) {
-        ToolbarHelper.instance().init(mActivity, null)
+        mToolbarHelper = ToolbarHelper.instance().init(mActivity, null)
                 .setTitle(titleText)
                 .setTitleColor(getResources().getColor(R.color.chart_title_text))
-                .setBackgroundColor(getResources().getColor(R.color.chart_title_bg))
+                .setBackgroundColor(getResources().getColor(R.color.base_transparent))
                 .setLeft(com.mobcb.base.R.drawable.base_ic_black_back, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -91,13 +96,25 @@ public class TabNormalChartActivity extends BaseChartActivity implements View.On
                         }
                         mActivity.finish();
                     }
-                });
+                })
+                .hideShadow()
+                .hideTopView();
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (mChartLlTimeSelect != null && View.VISIBLE == mChartLlTimeSelect.getVisibility()) {
+            mChartLlTimeSelect.setVisibility(View.GONE);
+            return;
+        }
+        mActivity.finish();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        ImmersionBarHelper.setDarkFont(mActivity, null);
     }
 
     @Override
@@ -128,6 +145,13 @@ public class TabNormalChartActivity extends BaseChartActivity implements View.On
             if (chartList != null && !chartList.isEmpty()) {
                 List<Fragment> fragments = new ArrayList<>();
                 List<String> title = new ArrayList<>();
+
+                ChartDetailBean temp = chartList.get(0);
+                if (temp != null) {
+                    dateFormat = temp.getDateFormat();
+                    checkSelectable();
+                }
+
                 for (ChartDetailBean chartDetailBean : chartList) {
                     if (chartDetailBean != null) {
                         title.add(chartDetailBean.getTitle());
@@ -139,6 +163,7 @@ public class TabNormalChartActivity extends BaseChartActivity implements View.On
                             ArrayList<ChartDetailBean> list = new ArrayList<>(1);
                             list.add(chartDetailBean);
                             Bundle bundle = new Bundle();
+                            bundle.putString("ids", ids);
                             bundle.putParcelableArrayList(BaseNormalFragment.KEY_BUNDLE_CHART_LIST, list);
                             NormalBarChartFragment normalBarChartFragment = new NormalBarChartFragment();
                             normalBarChartFragment.setArguments(bundle);
@@ -147,6 +172,7 @@ public class TabNormalChartActivity extends BaseChartActivity implements View.On
                             ArrayList<ChartDetailBean> list = new ArrayList<>(1);
                             list.add(chartDetailBean);
                             Bundle bundle = new Bundle();
+                            bundle.putString("ids", ids);
                             bundle.putParcelableArrayList(BaseNormalFragment.KEY_BUNDLE_CHART_LIST, list);
                             NormalLineChartFragment lineChartFragment = new NormalLineChartFragment();
                             lineChartFragment.setArguments(bundle);
@@ -155,6 +181,7 @@ public class TabNormalChartActivity extends BaseChartActivity implements View.On
                             ArrayList<ChartDetailBean> list = new ArrayList<>(1);
                             list.add(chartDetailBean);
                             Bundle bundle = new Bundle();
+                            bundle.putString("ids", ids);
                             bundle.putParcelableArrayList(BaseNormalFragment.KEY_BUNDLE_CHART_LIST, list);
                             NormalPieChartFragment pieChartFragment = new NormalPieChartFragment();
                             pieChartFragment.setArguments(bundle);
@@ -165,7 +192,9 @@ public class TabNormalChartActivity extends BaseChartActivity implements View.On
                 mViewPager.setAdapter(new MineViewPagerAdapter(getSupportFragmentManager(), fragments, title));
                 mIndicator.setViewPager(mViewPager);
                 mViewPager.setCurrentItem(0);
-                initTitle(groupTitle);
+                if (mToolbarHelper != null) {
+                    mToolbarHelper.setTitle(groupTitle);
+                }
                 if (chartList.size() == 1) {
                     mIndicator.setVisibility(View.GONE);
                 }
@@ -179,6 +208,9 @@ public class TabNormalChartActivity extends BaseChartActivity implements View.On
         int i = v.getId();
         if (i == R.id.chart_btn_time_select) {
             //开始筛选
+            if (mToolbarHelper != null) {
+                mToolbarHelper.hideShadow();
+            }
             String startTime = mChartTvTimeStart.getText().toString().trim();
             String endTime = mChartTvTimeEnd.getText().toString().trim();
             if (!TextUtils.isEmpty(startTime) && !TextUtils.isEmpty(endTime)) {

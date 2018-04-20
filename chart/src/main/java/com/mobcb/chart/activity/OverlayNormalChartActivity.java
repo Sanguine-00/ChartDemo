@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.mobcb.base.helper.ToolbarHelper;
 import com.mobcb.base.util.FragmentUtils;
+import com.mobcb.base.util.ScreenUtils;
 import com.mobcb.base.util.ToastUtils;
 import com.mobcb.chart.ChartConstants;
 import com.mobcb.chart.R;
@@ -34,17 +35,23 @@ public class OverlayNormalChartActivity extends BaseChartActivity implements Vie
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ScreenUtils.setFullScreen(this);
         setContentView(R.layout.activity_overlay_normal_chart);
         initView();
         initTitle(groupTitle);
         getChartDetail(null, null);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     protected void initTitle(String titleText) {
-        ToolbarHelper.instance().init(mActivity, null)
+        mToolbarHelper = ToolbarHelper.instance().init(mActivity, null)
                 .setTitle(titleText)
                 .setTitleColor(getResources().getColor(R.color.chart_title_text))
-                .setBackgroundColor(getResources().getColor(R.color.chart_title_bg))
+                .setBackgroundColor(getResources().getColor(R.color.base_transparent))
                 .setLeft(com.mobcb.base.R.drawable.base_ic_black_back, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -54,7 +61,9 @@ public class OverlayNormalChartActivity extends BaseChartActivity implements Vie
                         }
                         mActivity.finish();
                     }
-                });
+                })
+                .hideShadow()
+                .hideTopView();
     }
 
     @Override
@@ -74,11 +83,7 @@ public class OverlayNormalChartActivity extends BaseChartActivity implements Vie
                 if (chartDetailBean != null) {
                     //判断dateFormat,如果不为null,则需要支持筛选
                     dateFormat = chartDetailBean.getDateFormat();
-                    if (dateFormat != null) {
-                        setSelectable();
-                    } else {
-                        setUnSelectable();
-                    }
+                    checkSelectable();
 
                     ArrayList<ChartDetailBean> list = new ArrayList<>(chartList.size());
                     list.addAll(chartList);
@@ -129,6 +134,9 @@ public class OverlayNormalChartActivity extends BaseChartActivity implements Vie
         int i = v.getId();
         if (i == R.id.chart_btn_time_select) {
             //开始筛选
+            if (mToolbarHelper != null) {
+                mToolbarHelper.hideShadow();
+            }
             String startTime = mChartTvTimeStart.getText().toString().trim();
             String endTime = mChartTvTimeEnd.getText().toString().trim();
             if (!TextUtils.isEmpty(startTime) && !TextUtils.isEmpty(endTime)) {

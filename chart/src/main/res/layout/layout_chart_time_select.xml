@@ -3,80 +3,106 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/chart_ll_time_select"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:background="#f6f6f6"
+    android:layout_height="160dp"
+    android:background="@color/chart_title_bg"
     android:orientation="vertical"
-    android:visibility="gone">
+    android:visibility="gone"
+    tools:visibility="visible">
 
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingLeft="20dp">
+            android:id="@+id/chart_ll_time_start"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="@drawable/chart_shape_time_select_time_bg"
+            android:orientation="horizontal"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:gravity="center_vertical"
                 android:text="@string/chart_time_start"
-                android:textColor="@color/base_black"
-                android:textSize="@dimen/font14" />
+                android:textColor="@color/chart_text"
+                android:textSize="@dimen/font12" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="#ff2c3133" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:gravity="center_vertical"
-                android:text="@string/chart_time_end"
-                android:textColor="@color/base_black"
-                android:textSize="@dimen/font14" />
+
+                android:id="@+id/chart_tv_time_start"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:textColor="@color/chart_text"
+                android:textSize="@dimen/font12"
+                tools:text="@string/chart_time_start" />
+
         </LinearLayout>
 
+        <View
+            android:layout_width="16dp"
+            android:layout_height="40dp" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:orientation="vertical"
-            android:paddingLeft="20dp">
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="@drawable/chart_shape_time_select_time_bg"
+            android:orientation="horizontal"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
 
             <TextView
-                android:id="@+id/chart_tv_time_start"
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:gravity="center_vertical"
-                android:textColor="@color/base_black"
-                android:textSize="@dimen/font14"
-                tools:text="@string/chart_time_start" />
+                android:text="@string/chart_time_end"
+                android:textColor="@color/chart_text"
+                android:textSize="@dimen/font12" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="#ff2c3133" />
 
             <TextView
                 android:id="@+id/chart_tv_time_end"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:gravity="center_vertical"
-                android:textColor="@color/base_black"
-                android:textSize="@dimen/font14"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:textColor="@color/chart_text"
+                android:textSize="@dimen/font12"
                 tools:text="@string/chart_time_end" />
         </LinearLayout>
 
+    </LinearLayout>
 
-        <Button
-            android:id="@+id/chart_btn_time_select"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/chart_shape_time_select_bg"
-            android:text="@string/chart_search"
-            android:textColor="@color/base_black"
-            android:textSize="@dimen/font14" />
-
-    </RelativeLayout>
+    <Button
+        android:id="@+id/chart_btn_time_select"
+        android:layout_width="120dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/chart_shape_time_select_btn_bg"
+        android:text="@string/chart_search"
+        android:textColor="@color/base_white"
+        android:textSize="@dimen/font12" />
 
 </LinearLayout>

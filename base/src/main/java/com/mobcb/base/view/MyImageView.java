@@ -100,7 +100,6 @@ public class MyImageView extends ImageView {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        Log.e("TAG", "onMeasure");
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
         /**

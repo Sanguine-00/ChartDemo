@@ -12,17 +12,16 @@
             android:name=".activity.ChartMainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.mobcb.chart.activity.NormalChartListActivity"
-            android:screenOrientation="portrait"></activity>
+            android:name=".activity.NormalChartListActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.OverlayNormalChartActivity"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape"
+            android:theme="@style/chart_theme" />
         <activity
             android:name=".activity.TabNormalChartActivity"
-            android:screenOrientation="landscape" />
-        <!--<activity-->
-        <!--android:name=".activity.NormalChartListActivity"-->
-        <!--android:screenOrientation="landscape" />-->
+            android:screenOrientation="landscape"
+            android:theme="@style/chart_theme" />
     </application>
 
 

@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.mobcb.base.activity.BaseActivity;
+import com.mobcb.base.helper.AndroidBug5497Workaround;
 import com.mobcb.base.helper.ImmersionBarHelper;
 import com.mobcb.base.mvp.BaseMvpView;
 import com.mobcb.base.util.ToastUtils;
@@ -43,6 +44,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements BaseM
         setContentView(R.layout.activity_login);
         initView();
         mPresenter = new LoginPresenter(this);
+        AndroidBug5497Workaround.assistActivity(this);
     }
 
     private void initView() {
@@ -61,12 +63,12 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements BaseM
             default:
                 break;
             case R.id.app_login_btn:
-                if(validateInput()){
-                    if(mPresenter!=null){
+                if (validateInput()) {
+                    if (mPresenter != null) {
                         String textUsr = mAppEtLoginUserName.getText().toString();
                         String textPwd = mAppEtLoginUserPwd.getText().toString();
                         String textCode = mAppEtLoginCode.getText().toString();
-                        mPresenter.loginRequest(textUsr,textPwd,textCode);
+                        mPresenter.loginRequest(textUsr, textPwd, textCode);
                     }
                 }
 

@@ -15,6 +15,7 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
+import com.mobcb.base.util.LogUtils;
 import com.mobcb.base.util.UnitUtils;
 import com.mobcb.chart.R;
 import com.mobcb.chart.bean.ChartColorName;

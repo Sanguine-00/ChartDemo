@@ -24,7 +24,6 @@ public class PieChartFormatter extends PercentFormatter {
 
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
-        LogUtils.e(value);
         float percent = value / yValueSum * 100f;
         String result = String.format(context.getString(R.string.chart_pie_value_formatter),
                 mFormat.format(value), mFormat.format(percent));
@@ -33,7 +32,6 @@ public class PieChartFormatter extends PercentFormatter {
 
     @Override
     public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-        LogUtils.e(value);
         float percent = value / yValueSum * 100f;
         String result = String.format(context.getString(R.string.chart_pie_value_formatter),
                 mFormat.format(value), mFormat.format(percent));

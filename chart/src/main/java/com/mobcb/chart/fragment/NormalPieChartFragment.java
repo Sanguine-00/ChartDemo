@@ -80,13 +80,11 @@ public class NormalPieChartFragment extends BaseNormalFragment implements OnChar
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         this.isVisibleToUser = isVisibleToUser;
-        if (isVisibleToUser) {
-            if (!TextUtils.isEmpty(format)) {
-                EventBus.getDefault().post(new ChartEventBusBean(
-                        ChartEventBusBean.KEY_EVENT_BUS_SET_TIME_FORMAT,
-                        format
-                ));
-            }
+        if (isVisibleToUser && mRoot != null) {
+            EventBus.getDefault().post(new ChartEventBusBean(
+                    ChartEventBusBean.KEY_EVENT_BUS_SET_TIME_FORMAT,
+                    format
+            ));
         }
         super.setUserVisibleHint(isVisibleToUser);
     }

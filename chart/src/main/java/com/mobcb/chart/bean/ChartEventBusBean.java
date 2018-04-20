@@ -7,6 +7,7 @@ package com.mobcb.chart.bean;
 public class ChartEventBusBean {
     public static final String KEY_EVENT_BUS_TIME_SELECT = "key.event.bus.time.select";
     public static final String KEY_EVENT_BUS_SET_TIME_FORMAT = "key.event.bus.set.time.format";
+    public static final String KEY_EVENT_BUS_HIDE_TIME_SELECT = "key.event.bus.hide.time.select";
     private String action;
     private Object object;
 

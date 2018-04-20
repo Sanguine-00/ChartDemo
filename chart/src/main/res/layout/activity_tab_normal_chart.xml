@@ -3,25 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/chart_title_bg"
     android:orientation="vertical">
 
-    <include layout="@layout/base_toolbar" />
+    <include layout="@layout/chart_toolbar" />
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/base_transparent">
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/base_transparent"
             android:orientation="vertical">
 
             <com.mobcb.base.view.PagerSlidingTabStrip
                 android:id="@+id/indicator"
                 android:layout_width="match_parent"
-                android:layout_height="42.5dp"
-                android:background="#fff"
+                android:layout_height="30dp"
+                android:layout_marginTop="-8dp"
+                android:background="@color/base_transparent"
                 app:indicatorWidth="42.5dp"
                 app:pstsDividerColor="#00ffffff"
                 app:pstsDividerPadding="0dp"
@@ -29,8 +33,8 @@
                 app:pstsIndicatorHeight="1dp"
                 app:pstsUnderlineColor="#00ffffff"
                 app:pstsUnderlineHeight="0dp"
-                app:selectedTabTextColor="#000"
-                app:tabTextBold="true"
+                app:selectedTabTextColor="@color/chart_title_text"
+                app:tabTextBold="false"
                 app:tabTextColor="#B6B0B0"
                 app:tabTextSize="14sp"
                 app:tab_text_color="#B6B0B0" />
@@ -40,7 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="#fff" />
+                android:background="@color/chart_bg" />
 
         </LinearLayout>
 

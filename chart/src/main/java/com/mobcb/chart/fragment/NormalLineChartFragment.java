@@ -17,6 +17,8 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.LargeValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.mobcb.chart.ChartColorHelper;
 import com.mobcb.chart.ChartConstants;
 import com.mobcb.chart.R;
@@ -37,7 +39,7 @@ import java.util.Map;
 /**
  * 折线图碎片
  */
-public class NormalLineChartFragment extends BaseNormalFragment {
+public class NormalLineChartFragment extends BaseNormalFragment implements OnChartValueSelectedListener {
     private static final String TAG = NormalLineChartFragment.class.getSimpleName();
     private LineChart mChart;
     private List<String> xDesc = null;
@@ -80,13 +82,11 @@ public class NormalLineChartFragment extends BaseNormalFragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         this.isVisibleToUser = isVisibleToUser;
-        if (isVisibleToUser) {
-            if (!TextUtils.isEmpty(format)) {
-                EventBus.getDefault().post(new ChartEventBusBean(
-                        ChartEventBusBean.KEY_EVENT_BUS_SET_TIME_FORMAT,
-                        format
-                ));
-            }
+        if (isVisibleToUser && mRoot != null) {
+            EventBus.getDefault().post(new ChartEventBusBean(
+                    ChartEventBusBean.KEY_EVENT_BUS_SET_TIME_FORMAT,
+                    format
+            ));
         }
         super.setUserVisibleHint(isVisibleToUser);
     }
@@ -104,15 +104,8 @@ public class NormalLineChartFragment extends BaseNormalFragment {
 
     private void initView(View mView) {
         mChart = (LineChart) mView.findViewById(R.id.chart);
-
-    }
-
-    @Override
-    protected void dealWithChartBean(List<ChartDetailBean> chartList) {
-
         //隐藏描述
         mChart.getDescription().setEnabled(false);
-        mChart.getDescription().setText("");
         //设置是否可点击
         mChart.setTouchEnabled(true);
         //设置摩擦系数
@@ -126,8 +119,15 @@ public class NormalLineChartFragment extends BaseNormalFragment {
         mChart.animateXY(100, 100);
         //设置是否支持双指缩放
         mChart.setPinchZoom(true);
-        // set an alternative background color
+        //设置背景色
         mChart.setBackgroundColor(getResources().getColor(R.color.chart_bg));
+
+        mChart.setOnChartValueSelectedListener(this);
+
+    }
+
+    @Override
+    protected void dealWithChartBean(List<ChartDetailBean> chartList) {
         if (chartList != null && !chartList.isEmpty()) {
             //如果size为1,则有可能是tab下面的
             if (chartList.size() == 1) {
@@ -189,12 +189,12 @@ public class NormalLineChartFragment extends BaseNormalFragment {
             data.setValueTextSize(ChartConstants.CHART_TEXT_SIZE_DP);
             // set data
             mChart.setData(data);
-            setStyle(maxX, maxY);
+            setStyle(maxX);
         }
 
     }
 
-    private void setStyle(float maxX, float maxY) {
+    private void setStyle(float maxX) {
         mChart.animateX(1500);
 
         //图例设置
@@ -237,8 +237,6 @@ public class NormalLineChartFragment extends BaseNormalFragment {
         xAxis.setAxisMinimum(0f);
         //设置最大值
         xAxis.setAxisMaximum(maxX);
-        //设置label的数量
-//        xAxis.setLabelCount(maxX);
         //设置label格式
         IndexAxisValueFormatter formatter = new IndexAxisValueFormatter(xDesc);
         xAxis.setValueFormatter(formatter);
@@ -277,5 +275,16 @@ public class NormalLineChartFragment extends BaseNormalFragment {
         LineMarkerView mv = new LineMarkerView(mActivity, R.layout.layout_line_chart_marker_view, formatter);
         mv.setChartView(mChart); // For bounds control
         mChart.setMarker(mv); // Set the marker to the chart
+    }
+
+    @Override
+    public void onValueSelected(Entry e, Highlight h) {
+        //发送EventBus,通知Activity关闭时间选择的弹窗
+        EventBus.getDefault().post(new ChartEventBusBean(ChartEventBusBean.KEY_EVENT_BUS_HIDE_TIME_SELECT));
+    }
+
+    @Override
+    public void onNothingSelected() {
+
     }
 }

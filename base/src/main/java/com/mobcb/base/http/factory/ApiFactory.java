@@ -10,8 +10,6 @@ import com.mobcb.base.http.api.map.MapDownloadService;
 import com.mobcb.base.http.api.wifi.WifiAuthService;
 import com.mobcb.base.http.config.ServerUrlConfig;
 import com.mobcb.base.http.security.Sign;
-import com.mobcb.base.http.util.CommonUtil;
-import com.mobcb.base.http.util.JsonUtils;
 import com.mobcb.base.util.LogUtils;
 
 import java.io.IOException;
@@ -131,6 +129,7 @@ public class ApiFactory {
                     Buffer buffer = new Buffer();
                     requestBody.writeTo(buffer);
                     String bodyString = buffer.readUtf8();
+                    LogUtils.dTag("ApiFactory", "bodyString = " + bodyString);
                     if (!TextUtils.isEmpty(bodyString)) {
 //                        requestBody = JsonUtils.createRequestBody(bodyString, tm);
                         buffer.clear();

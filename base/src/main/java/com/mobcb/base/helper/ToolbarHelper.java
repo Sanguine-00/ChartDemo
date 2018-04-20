@@ -184,4 +184,17 @@ public class ToolbarHelper {
         }
         return mToolbarHelper;
     }
+
+
+    /**
+     * 隐藏topView
+     *
+     * @return
+     */
+    public ToolbarHelper hideTopView() {
+        if (top_view != null) {
+            top_view.setVisibility(View.GONE);
+        }
+        return mToolbarHelper;
+    }
 }

@@ -79,11 +79,11 @@ public class NormalChartListActivity extends BaseActivity implements OnRefreshLi
             String title = getIntent().getStringExtra(KEY_BUNDLE_TITLE);
             if (title != null) {
                 initTitle(title);
-            }else{
+            } else {
                 initTitle(getString(R.string.chart_list));
             }
             if (moduleId != null) {
-                getData(moduleId);
+                getData(true, moduleId);
             }
         }
     }
@@ -93,8 +93,10 @@ public class NormalChartListActivity extends BaseActivity implements OnRefreshLi
         mRefreshLayout.setNoMoreData(false);//恢复没有更多数据的原始状态 1.0.5
     }
 
-    private void getData(final String moduleId) {
-        showLoading();
+    private void getData(final boolean needLoading, final String moduleId) {
+        if (needLoading) {
+            showLoading();
+        }
         AuthHelper.auth(ChartService.class)
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Action1<ChartService>() {
@@ -138,7 +140,7 @@ public class NormalChartListActivity extends BaseActivity implements OnRefreshLi
 
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-        getData(moduleId);
+        getData(false, moduleId);
     }
 
     @Override
