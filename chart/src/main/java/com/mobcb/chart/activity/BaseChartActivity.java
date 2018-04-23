@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
+import com.bigkoo.pickerview.listener.OnDismissListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.mobcb.base.activity.BaseActivity;
@@ -95,6 +96,15 @@ public class BaseChartActivity extends BaseActivity {
                 .setSubCalSize(12)
                 .setLineSpacingMultiplier(2f)
                 .build();
+
+        startTimePickerView.setOnDismissListener(new OnDismissListener() {
+            @Override
+            public void onDismiss(Object o) {
+                if (mChartTvTimeStart != null) {
+                    mChartTvTimeStart.setActivated(false);
+                }
+            }
+        });
     }
 
     private void initEndTime() {
@@ -126,6 +136,14 @@ public class BaseChartActivity extends BaseActivity {
                 .setContentTextSize(12)
                 .setSubCalSize(12)
                 .build();
+        endTimePickerView.setOnDismissListener(new OnDismissListener() {
+            @Override
+            public void onDismiss(Object o) {
+                if (mChartTvTimeEnd != null) {
+                    mChartTvTimeEnd.setActivated(false);
+                }
+            }
+        });
     }
 
     protected void getArgument() {

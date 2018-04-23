@@ -69,21 +69,21 @@ public class NormalMarkerView extends MarkerView {
                         //设置抗锯齿
                         paint.setAntiAlias(true);
                         //设置画笔粗细
-                        paint.setStrokeWidth(2);
+                        paint.setStrokeWidth(1);
                         //设置是否为空心
                         paint.setStyle(Paint.Style.FILL);
                         Rect rect = new Rect(0,
                                 0,
-                                UnitUtils.dip2px(getContext(), 4),
-                                UnitUtils.dip2px(getContext(), 4));
+                                UnitUtils.dip2px(getContext(), 8),
+                                UnitUtils.dip2px(getContext(), 8));
                         canvas.drawRect(rect, paint);
                     }
                 };
-                shape.resize(UnitUtils.dip2px(getContext(), 5), UnitUtils.dip2px(getContext(), 5));
+                shape.resize(UnitUtils.dip2px(getContext(), 8), UnitUtils.dip2px(getContext(), 8));
                 ShapeDrawable drawable = new ShapeDrawable(shape);
-                drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                drawable.setBounds(0, 0, (int) shape.getWidth(), (int) shape.getHeight());
                 mTvChartLineName.setCompoundDrawables(drawable, null, null, null);
-                mTvChartLineName.setCompoundDrawablePadding(UnitUtils.dip2px(getContext(), 6));
+                mTvChartLineName.setCompoundDrawablePadding(UnitUtils.dip2px(getContext(), 8));
             } else if (ChartConstants.CHART_TYPE_LINE.equals(dataProperty.getChartType())) {
                 Shape shape = new Shape() {
                     @Override
@@ -93,7 +93,7 @@ public class NormalMarkerView extends MarkerView {
                         //设置抗锯齿
                         paint.setAntiAlias(true);
                         //设置画笔粗细
-                        paint.setStrokeWidth(2);
+                        paint.setStrokeWidth(1);
                         //设置是否为空心
                         paint.setStyle(Paint.Style.FILL);
                         canvas.drawCircle(0, 0, UnitUtils.dip2px(getContext(), 4), paint);
@@ -101,7 +101,10 @@ public class NormalMarkerView extends MarkerView {
                 };
                 shape.resize(UnitUtils.dip2px(getContext(), 5), UnitUtils.dip2px(getContext(), 5));
                 ShapeDrawable drawable = new ShapeDrawable(shape);
-                drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                drawable.setBounds(UnitUtils.dip2px(getContext(), 4),
+                        UnitUtils.dip2px(getContext(), 4),
+                        UnitUtils.dip2px(getContext(), 12),
+                        UnitUtils.dip2px(getContext(), 12));
                 mTvChartLineName.setCompoundDrawables(drawable, null, null, null);
                 mTvChartLineName.setCompoundDrawablePadding(UnitUtils.dip2px(getContext(), 6));
             }

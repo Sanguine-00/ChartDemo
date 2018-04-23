@@ -171,6 +171,7 @@ public class NormalCombinedChartFragment extends BaseNormalFragment implements O
                         set.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
                         //添加数据
                         sets.add(set);
+                        set.setForm(Legend.LegendForm.CIRCLE);
                     }
                 }
             }
@@ -216,6 +217,7 @@ public class NormalCombinedChartFragment extends BaseNormalFragment implements O
                 barDataSet.setValueTextSize(ChartConstants.CHART_TEXT_SIZE_DP);
                 barDataSet.setDrawValues(false);
                 barDataSets.add(barDataSet);
+                barDataSet.setForm(Legend.LegendForm.SQUARE);
             }
 
 
@@ -235,7 +237,7 @@ public class NormalCombinedChartFragment extends BaseNormalFragment implements O
         Legend l = mChart.getLegend();
 
         //设置图例的左边标志为圆点
-        l.setForm(Legend.LegendForm.CIRCLE);
+        l.setForm(Legend.LegendForm.DEFAULT);
         //设置图例中文本字体大小
         l.setTextSize(ChartConstants.CHART_TEXT_SIZE_DP);
         //设置图例中文本颜色

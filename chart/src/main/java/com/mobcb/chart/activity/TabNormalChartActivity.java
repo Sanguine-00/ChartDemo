@@ -235,9 +235,15 @@ public class TabNormalChartActivity extends BaseChartActivity implements View.On
         } else if (i == R.id.chart_tv_time_start) {
             //选择开始时间
             startTimePickerView.show();
+            if (mChartTvTimeStart != null) {
+                mChartTvTimeStart.setActivated(true);
+            }
         } else if (i == R.id.chart_tv_time_end) {
             //选择结束时间
             endTimePickerView.show();
+            if (mChartTvTimeEnd != null) {
+                mChartTvTimeEnd.setActivated(true);
+            }
         } else {
 
         }

@@ -124,14 +124,14 @@ public class OverlayNormalChartActivity extends BaseChartActivity implements Vie
                     Bundle bundle = new Bundle();
                     bundle.putParcelableArrayList(BaseNormalFragment.KEY_BUNDLE_CHART_LIST, list);
 
-                    //test
-                    NormalCombinedChartFragment test = new NormalCombinedChartFragment();
-                    test.setArguments(bundle);
-                    FragmentUtils.add(getSupportFragmentManager(), test, R.id.content);
-                    FragmentUtils.show(test);
-                    if (true) {
-                        return;
-                    }
+//                    //test
+//                    NormalCombinedChartFragment test = new NormalCombinedChartFragment();
+//                    test.setArguments(bundle);
+//                    FragmentUtils.add(getSupportFragmentManager(), test, R.id.content);
+//                    FragmentUtils.show(test);
+//                    if (true) {
+//                        return;
+//                    }
                     if (ChartConstants.CHART_TYPE_BARS.equals(chartDetailBean.getChartType())) {
                         //柱状图
                         NormalBarChartFragment normalBarChartFragment = new NormalBarChartFragment();
@@ -201,9 +201,15 @@ public class OverlayNormalChartActivity extends BaseChartActivity implements Vie
         } else if (i == R.id.chart_tv_time_start) {
             //选择开始时间
             startTimePickerView.show();
+            if (mChartTvTimeStart != null) {
+                mChartTvTimeStart.setActivated(true);
+            }
         } else if (i == R.id.chart_tv_time_end) {
             //选择结束时间
             endTimePickerView.show();
+            if (mChartTvTimeEnd != null) {
+                mChartTvTimeEnd.setActivated(true);
+            }
         } else {
 
         }

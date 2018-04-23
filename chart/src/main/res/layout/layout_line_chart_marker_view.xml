@@ -38,11 +38,10 @@
             <TextView
                 android:id="@+id/chart_line_name"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:layout_centerVertical="true"
                 android:ellipsize="end"
                 android:gravity="center_vertical"
-                android:paddingLeft="4dp"
                 android:singleLine="true"
                 android:text=""
                 android:textColor="@color/chart_text"
