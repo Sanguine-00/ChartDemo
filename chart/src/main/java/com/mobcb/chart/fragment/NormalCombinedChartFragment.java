@@ -20,12 +20,19 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
-import com.mobcb.base.util.ScreenUtils;
+import com.github.mikephil.charting.formatter.LargeValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.mobcb.chart.ChartColorHelper;
 import com.mobcb.chart.ChartConstants;
 import com.mobcb.chart.R;
 import com.mobcb.chart.bean.ChartDataListBean;
 import com.mobcb.chart.bean.ChartDetailBean;
+import com.mobcb.chart.bean.ChartEventBusBean;
+import com.mobcb.chart.bean.DataProperty;
+import com.mobcb.chart.view.NormalMarkerView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +40,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NormalCombinedChartFragment extends BaseNormalFragment {
+public class NormalCombinedChartFragment extends BaseNormalFragment implements OnChartValueSelectedListener {
 
     private CombinedChart mChart;
     private ArrayList<String> xDesc;
@@ -48,38 +55,38 @@ public class NormalCombinedChartFragment extends BaseNormalFragment {
         // Inflate the layout for this fragment
         mRoot = inflater.inflate(R.layout.fragment_normal_combined_chart, container, false);
         initView();
+        getChartDetail();
         return mRoot;
     }
 
     private void initView() {
         mChart = (CombinedChart) mRoot.findViewById(R.id.chart);
+
+        //隐藏描述
         mChart.getDescription().setEnabled(false);
-        mChart.setBackgroundColor(Color.WHITE);
+        //设置是否可点击
+        mChart.setTouchEnabled(true);
+        //设置摩擦系数
+        mChart.setDragDecelerationFrictionCoef(0.9f);
+        //设置是否支持拖拽
+        mChart.setDragEnabled(true);
+        mChart.setScaleEnabled(true);
+        //设置是否绘制网络背景
         mChart.setDrawGridBackground(false);
-        mChart.setDrawBarShadow(false);
-        mChart.setHighlightFullBarEnabled(false);
+        //设置动画时间
+        mChart.animateXY(100, 100);
+        //设置是否支持双指缩放
+        mChart.setPinchZoom(true);
+        //设置背景色
+        mChart.setBackgroundColor(getResources().getColor(R.color.chart_bg));
+
+        mChart.setOnChartValueSelectedListener(this);
 
         // draw bars behind lines
         mChart.setDrawOrder(new CombinedChart.DrawOrder[]{
                 CombinedChart.DrawOrder.BAR,
                 CombinedChart.DrawOrder.LINE,
         });
-
-        Legend l = mChart.getLegend();
-        l.setWordWrapEnabled(true);
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
-        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
-        l.setDrawInside(false);
-
-        YAxis rightAxis = mChart.getAxisRight();
-        rightAxis.setDrawGridLines(false);
-        rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
-
-        YAxis leftAxis = mChart.getAxisLeft();
-        leftAxis.setDrawGridLines(false);
-        leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
-
 
     }
 
@@ -88,15 +95,22 @@ public class NormalCombinedChartFragment extends BaseNormalFragment {
         if (chartList != null && chartList.size() > 0) {
             List<ChartDetailBean> lineList = new ArrayList<>();
             List<ChartDetailBean> barList = new ArrayList<>();
-            for (ChartDetailBean chartDetailBean : chartList) {
-                if (chartDetailBean != null) {
-                    if (ChartConstants.CHART_TYPE_LINE.equalsIgnoreCase(chartDetailBean.getChartType())) {
-                        lineList.add(chartDetailBean);
-                    } else if (ChartConstants.CHART_TYPE_BARS.equalsIgnoreCase(chartDetailBean.getChartType())) {
-                        barList.add(chartDetailBean);
-                    }
-                }
+
+            barList.add(chartList.get(0));
+            chartList.remove(0);
+            if (!chartList.isEmpty()) {
+                lineList.addAll(chartList);
             }
+
+//            for (ChartDetailBean chartDetailBean : chartList) {
+//                if (chartDetailBean != null) {
+//                    if (ChartConstants.CHART_TYPE_LINE.equalsIgnoreCase(chartDetailBean.getChartType())) {
+//                        lineList.add(chartDetailBean);
+//                    } else if (ChartConstants.CHART_TYPE_BARS.equalsIgnoreCase(chartDetailBean.getChartType())) {
+//                        barList.add(chartDetailBean);
+//                    }
+//                }
+//            }
 
             CombinedData data = new CombinedData();
             if (lineList != null && !lineList.isEmpty()) {
@@ -106,15 +120,10 @@ public class NormalCombinedChartFragment extends BaseNormalFragment {
                 data.setData(generateBarData(barList));
             }
 
-            XAxis xAxis = mChart.getXAxis();
-            xAxis.setPosition(XAxis.XAxisPosition.BOTH_SIDED);
-            xAxis.setAxisMinimum(0f);
-            xAxis.setGranularity(1f);
-            xAxis.setValueFormatter(new IndexAxisValueFormatter(xDesc));
-            xAxis.setAxisMaximum(data.getXMax() + 0.25f);
-
             mChart.setData(data);
             mChart.invalidate();
+
+            setStyle();
 
         }
     }
@@ -140,31 +149,26 @@ public class NormalCombinedChartFragment extends BaseNormalFragment {
                                     xDesc.add(chartDataListBean.getXDesc());
                                 }
                                 maxY = chartDataListBean.getYValue() > maxY ? chartDataListBean.getYValue() : maxY;
+                                DataProperty dataProperty = new DataProperty();
+                                dataProperty.setColor(ChartColorHelper.getColorByIndex(mActivity, i + 1));
+                                dataProperty.setName(chartDetailBean.getTitle());
+                                dataProperty.setChartType(ChartConstants.CHART_TYPE_LINE);
                                 yValues.add(new Entry(chartDataListBean.getXValue(),
                                         chartDataListBean.getYValue(),
-                                        chartDataListBean.getXDesc()));
+                                        dataProperty));
                             }
                         }
                         LineDataSet set = new LineDataSet(yValues, chartDetailBean.getTitle());
-                        //设置值的文本颜色
-                        set.setValueTextColor(Color.BLACK);
-                        set.setAxisDependency(YAxis.AxisDependency.LEFT);
-                        //设置颜色集
-                        set.setColors(getColors(i));
-                        //设置圆圈的颜色
-                        set.setCircleColor(Color.YELLOW);
-                        //设置圆圈是否空心
-                        set.setDrawCircleHole(false);
-                        //设置线的粗细
+                        //设置此线条的颜色
+                        set.setColors(ChartColorHelper.getColorByIndex(mActivity, i + 1));
+                        //是否绘制圆圈
+                        set.setDrawCircles(false);
+                        //设置线条的粗细
                         set.setLineWidth(2f);
-                        //设置圆角度数
-                        set.setCircleRadius(3f);
-                        //设置透明度
-                        set.setFillAlpha(65);
-                        //设置填充颜色
-                        set.setFillColor(ColorTemplate.getHoloBlue());
-                        //设置高亮颜色
-                        set.setHighLightColor(getColors(i).get(0));
+                        set.setHighLightColor(ChartColorHelper.getColorByIndex(mActivity, i + 1));
+                        set.setDrawValues(false);
+                        //设置线条模式
+                        set.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
                         //添加数据
                         sets.add(set);
                     }
@@ -188,7 +192,6 @@ public class NormalCombinedChartFragment extends BaseNormalFragment {
         //纵轴的描述(label)
         final List<String> yDesc = new ArrayList<>();
 
-        int count = 0;
         //数据解析
         if (barList != null && !barList.isEmpty()) {
             for (int j = 0; j < barList.size(); j++) {
@@ -197,26 +200,24 @@ public class NormalCombinedChartFragment extends BaseNormalFragment {
                 if (chartDetailBean != null) {
                     List<ChartDataListBean> chartDataList = chartDetailBean.getChartDataList();
                     for (int i = 0; i < chartDataList.size(); i++) {
-                        count += 1;
                         ChartDataListBean chartDataListBean = chartDataList.get(i);
                         if (chartDataListBean != null) {
-                            xDesc.add(i, chartDataListBean.getXDesc());
-                            yDesc.add(chartDetailBean.getTitle());
-                            entries.add(new BarEntry(chartDataListBean.getXValue(), chartDataListBean.getYValue(), chartDetailBean.getTitle()));
+                            DataProperty dataProperty = new DataProperty();
+                            dataProperty.setColor(ChartColorHelper.getColorByIndex(getContext(), j));
+                            dataProperty.setName(chartDetailBean.getTitle());
+                            dataProperty.setChartType(ChartConstants.CHART_TYPE_BARS);
+                            entries.add(new BarEntry(chartDataListBean.getXValue(), chartDataListBean.getYValue(), dataProperty));
                         }
                     }
                 }
                 BarDataSet barDataSet = new BarDataSet(entries, chartDetailBean.getTitle());
-                barDataSet.setColor(getColors(j).get(0));
+                barDataSet.setColor(ChartColorHelper.getColorByIndex(getContext(), j));
+                barDataSet.setValueTextColor(getResources().getColor(R.color.chart_text));
+                barDataSet.setValueTextSize(ChartConstants.CHART_TEXT_SIZE_DP);
+                barDataSet.setDrawValues(false);
                 barDataSets.add(barDataSet);
             }
 
-            //柱子的宽度根据屏幕宽度,柱子总数计算得来
-            float screenWidth = ScreenUtils.getScreenWidth();
-            float barWidth = 0f;
-            if (count > 0) {
-                barWidth = screenWidth / count / 800;
-            }
 
             BarDataSet[] barDataSets1 = new BarDataSet[barDataSets.size()];
             for (int i = 0; i < barDataSets.size(); i++) {
@@ -224,9 +225,99 @@ public class NormalCombinedChartFragment extends BaseNormalFragment {
             }
             BarData data = new BarData(barDataSets1);
             data.setValueTextColor(Color.BLACK);
-            data.setBarWidth(barWidth);
             return data;
         }
         return null;
+    }
+
+    private void setStyle() {
+        //图例设置
+        Legend l = mChart.getLegend();
+
+        //设置图例的左边标志为圆点
+        l.setForm(Legend.LegendForm.CIRCLE);
+        //设置图例中文本字体大小
+        l.setTextSize(ChartConstants.CHART_TEXT_SIZE_DP);
+        //设置图例中文本颜色
+        l.setTextColor(getResources().getColor(R.color.chart_text));
+        //设置图例位置
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        //设置是否在图表中绘制
+        l.setDrawInside(false);
+
+        //偏移设置
+        l.setYOffset(5f);
+        l.setXOffset(0f);
+        l.setYEntrySpace(0f);
+        l.setTextSize(ChartConstants.CHART_TEXT_SIZE_DP);
+
+        //X轴设置
+        XAxis xAxis = mChart.getXAxis();
+        //X轴中文本字体大小(dp)
+        xAxis.setTextSize(ChartConstants.CHART_TEXT_SIZE_DP);
+        //X轴中文本字体颜色
+        xAxis.setTextColor(getResources().getColor(R.color.chart_text));
+        //X轴位置
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        //是否绘制描述/标签
+        xAxis.setDrawLabels(true);
+        //是否绘制纵线
+        xAxis.setDrawGridLines(false);
+        //设置刻度
+        xAxis.setGranularity(1f);
+        //设置X轴最小值
+        xAxis.setAxisMinimum(0f);
+        //设置label格式
+        IndexAxisValueFormatter formatter = new IndexAxisValueFormatter(xDesc);
+        xAxis.setValueFormatter(formatter);
+        //设置旋转角度
+        xAxis.setLabelRotationAngle(0f);
+        //高度偏移
+        xAxis.setYOffset(10);
+        //避免首尾显示不全
+        xAxis.setAvoidFirstLastClipping(true);
+        //居中
+        xAxis.setCenterAxisLabels(false);
+        //设置网格颜色
+        xAxis.setGridColor(getResources().getColor(R.color.chart_grid_color));
+
+
+        //设置Y轴参数
+        YAxis leftAxis = mChart.getAxisLeft();
+        //设置Y轴字体颜色
+        leftAxis.setTextColor(getResources().getColor(R.color.chart_text));
+        //设置Y轴字体大小
+        leftAxis.setTextSize(ChartConstants.CHART_TEXT_SIZE_DP);
+        //设置是否绘制横线
+        leftAxis.setDrawGridLines(true);
+        //设置是否绘制纵坐标的轴
+        leftAxis.setDrawAxisLine(false);
+        //设置纵坐标最小值
+        leftAxis.setAxisMinimum(0f);
+        //设置value的格式
+        leftAxis.setValueFormatter(new LargeValueFormatter());
+
+        //隐藏右边Y轴
+        mChart.getAxisRight().setEnabled(false);
+
+
+        //设置标注
+        NormalMarkerView mv = new NormalMarkerView(mActivity, R.layout.layout_line_chart_marker_view, formatter);
+        mv.setChartView(mChart); // For bounds control
+        mChart.setMarker(mv); // Set the marker to the chart
+
+    }
+
+    @Override
+    public void onValueSelected(Entry e, Highlight h) {
+        //发送EventBus,通知Activity关闭时间选择的弹窗
+        EventBus.getDefault().post(new ChartEventBusBean(ChartEventBusBean.KEY_EVENT_BUS_HIDE_TIME_SELECT));
+    }
+
+    @Override
+    public void onNothingSelected() {
+
     }
 }

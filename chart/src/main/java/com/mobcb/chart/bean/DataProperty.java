@@ -4,34 +4,47 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.ColorInt;
 
+import com.mobcb.chart.ChartConstants;
+
 import java.io.Serializable;
 
 /**
  * Created by Sanguine on 2018/4/19.
  */
 
-public class ChartColorName implements Parcelable, Serializable {
-    public static final Parcelable.Creator<ChartColorName> CREATOR = new Parcelable.Creator<ChartColorName>() {
+public class DataProperty implements Parcelable, Serializable {
+    public static final Creator<DataProperty> CREATOR = new Creator<DataProperty>() {
         @Override
-        public ChartColorName createFromParcel(Parcel source) {
-            return new ChartColorName(source);
+        public DataProperty createFromParcel(Parcel source) {
+            return new DataProperty(source);
         }
 
         @Override
-        public ChartColorName[] newArray(int size) {
-            return new ChartColorName[size];
+        public DataProperty[] newArray(int size) {
+            return new DataProperty[size];
         }
     };
     private @ColorInt
     int color;
     private String name;
+    private @ChartConstants
+    String chartType;
 
-    public ChartColorName() {
+    public DataProperty() {
     }
 
-    protected ChartColorName(Parcel in) {
+    protected DataProperty(Parcel in) {
         this.color = in.readInt();
         this.name = in.readString();
+        this.chartType = in.readString();
+    }
+
+    public String getChartType() {
+        return chartType;
+    }
+
+    public void setChartType(String chartType) {
+        this.chartType = chartType;
     }
 
     public int getColor() {
@@ -59,5 +72,6 @@ public class ChartColorName implements Parcelable, Serializable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.color);
         dest.writeString(this.name);
+        dest.writeString(this.chartType);
     }
 }

@@ -24,11 +24,11 @@ import com.mobcb.chart.BarChartFormatter;
 import com.mobcb.chart.ChartColorHelper;
 import com.mobcb.chart.ChartConstants;
 import com.mobcb.chart.R;
-import com.mobcb.chart.bean.ChartColorName;
 import com.mobcb.chart.bean.ChartDataListBean;
 import com.mobcb.chart.bean.ChartDetailBean;
 import com.mobcb.chart.bean.ChartEventBusBean;
-import com.mobcb.chart.view.BarMarkerView;
+import com.mobcb.chart.bean.DataProperty;
+import com.mobcb.chart.view.NormalMarkerView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -170,10 +170,11 @@ public class NormalBarChartFragment extends BaseNormalFragment implements OnChar
                                 if (xDesc != null && xDesc.size() < chartDataList.size()) {
                                     xDesc.add(chartDataListBean.getXDesc());
                                 }
-                                ChartColorName colorName = new ChartColorName();
-                                colorName.setColor(ChartColorHelper.getColorByIndex(getContext(), j));
-                                colorName.setName(chartDetailBean.getTitle());
-                                entries.add(new BarEntry(chartDataListBean.getXValue(), chartDataListBean.getYValue(), colorName));
+                                DataProperty dataProperty = new DataProperty();
+                                dataProperty.setColor(ChartColorHelper.getColorByIndex(getContext(), j));
+                                dataProperty.setName(chartDetailBean.getTitle());
+                                dataProperty.setChartType(ChartConstants.CHART_TYPE_BARS);
+                                entries.add(new BarEntry(chartDataListBean.getXValue(), chartDataListBean.getYValue(), dataProperty));
                             }
                         }
                     }
@@ -294,7 +295,7 @@ public class NormalBarChartFragment extends BaseNormalFragment implements OnChar
         mChart.getAxisRight().setEnabled(false);
 
         //设置标注
-        BarMarkerView mv = new BarMarkerView(mActivity, R.layout.layout_line_chart_marker_view, formatter);
+        NormalMarkerView mv = new NormalMarkerView(mActivity, R.layout.layout_line_chart_marker_view, formatter);
         mv.setChartView(mChart); // For bounds control
         mChart.setMarker(mv); // Set the marker to the chart
     }

@@ -22,11 +22,11 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.mobcb.chart.ChartColorHelper;
 import com.mobcb.chart.ChartConstants;
 import com.mobcb.chart.R;
-import com.mobcb.chart.bean.ChartColorName;
 import com.mobcb.chart.bean.ChartDataListBean;
 import com.mobcb.chart.bean.ChartDetailBean;
 import com.mobcb.chart.bean.ChartEventBusBean;
-import com.mobcb.chart.view.LineMarkerView;
+import com.mobcb.chart.bean.DataProperty;
+import com.mobcb.chart.view.NormalMarkerView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -155,12 +155,13 @@ public class NormalLineChartFragment extends BaseNormalFragment implements OnCha
                                     xDesc.add(chartDataListBean.getXDesc());
                                 }
                                 maxY = chartDataListBean.getYValue() > maxY ? chartDataListBean.getYValue() : maxY;
-                                ChartColorName colorName = new ChartColorName();
-                                colorName.setColor(ChartColorHelper.getColorByIndex(mActivity, i));
-                                colorName.setName(chartDetailBean.getTitle());
+                                DataProperty dataProperty = new DataProperty();
+                                dataProperty.setColor(ChartColorHelper.getColorByIndex(mActivity, i));
+                                dataProperty.setChartType(ChartConstants.CHART_TYPE_LINE);
+                                dataProperty.setName(chartDetailBean.getTitle());
                                 yValues.add(new Entry(chartDataListBean.getXValue(),
                                         chartDataListBean.getYValue(),
-                                        colorName));
+                                        dataProperty));
                             }
                         }
                         LineDataSet set = new LineDataSet(yValues, chartDetailBean.getTitle());
@@ -214,8 +215,8 @@ public class NormalLineChartFragment extends BaseNormalFragment implements OnCha
         l.setDrawInside(false);
 
         //偏移设置
-        l.setYOffset(0f);
-        l.setXOffset(10f);
+        l.setYOffset(5f);
+        l.setXOffset(0f);
         l.setYEntrySpace(0f);
         l.setTextSize(ChartConstants.CHART_TEXT_SIZE_DP);
 
@@ -272,7 +273,7 @@ public class NormalLineChartFragment extends BaseNormalFragment implements OnCha
 
 
         //设置标注
-        LineMarkerView mv = new LineMarkerView(mActivity, R.layout.layout_line_chart_marker_view, formatter);
+        NormalMarkerView mv = new NormalMarkerView(mActivity, R.layout.layout_line_chart_marker_view, formatter);
         mv.setChartView(mChart); // For bounds control
         mChart.setMarker(mv); // Set the marker to the chart
     }

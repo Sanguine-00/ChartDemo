@@ -15,15 +15,12 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
-import com.mobcb.base.util.LogUtils;
 import com.mobcb.base.util.UnitUtils;
 import com.mobcb.chart.R;
-import com.mobcb.chart.bean.ChartColorName;
+import com.mobcb.chart.bean.DataProperty;
 
 /**
- * Custom implementation of the MarkerView.
- *
- * @author Philipp Jahoda
+ * ZGQ
  */
 public class BarMarkerView extends MarkerView {
 
@@ -58,8 +55,8 @@ public class BarMarkerView extends MarkerView {
         }
 
         Object data = e.getData();
-        if (data != null && data instanceof ChartColorName) {
-            ChartColorName colorName = (ChartColorName) data;
+        if (data != null && data instanceof DataProperty) {
+            DataProperty colorName = (DataProperty) data;
             mTvChartLineName.setText(String.format(" %s: ", colorName.getName()));
             final int color = colorName.getColor();
             Shape shape = new Shape() {

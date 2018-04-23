@@ -87,7 +87,7 @@ public class TabNormalChartActivity extends BaseChartActivity implements View.On
                 .setTitle(titleText)
                 .setTitleColor(getResources().getColor(R.color.chart_title_text))
                 .setBackgroundColor(getResources().getColor(R.color.base_transparent))
-                .setLeft(com.mobcb.base.R.drawable.base_ic_black_back, new View.OnClickListener() {
+                .setLeft(R.drawable.chart_icon_title_white_back, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (mChartLlTimeSelect != null && View.VISIBLE == mChartLlTimeSelect.getVisibility()) {

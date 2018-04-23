@@ -15,10 +15,16 @@ import com.mobcb.chart.ChartConstants;
 import com.mobcb.chart.R;
 import com.mobcb.chart.bean.ChartBean;
 import com.mobcb.chart.bean.ChartDetailBean;
+import com.mobcb.chart.bean.ChartEventBusBean;
 import com.mobcb.chart.fragment.BaseNormalFragment;
 import com.mobcb.chart.fragment.NormalBarChartFragment;
+import com.mobcb.chart.fragment.NormalCombinedChartFragment;
 import com.mobcb.chart.fragment.NormalLineChartFragment;
 import com.mobcb.chart.fragment.NormalPieChartFragment;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,6 +46,34 @@ public class OverlayNormalChartActivity extends BaseChartActivity implements Vie
         initView();
         initTitle(groupTitle);
         getChartDetail(null, null);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(ChartEventBusBean chartEventBusBean) {
+        if (chartEventBusBean != null) {
+            if (ChartEventBusBean.KEY_EVENT_BUS_HIDE_TIME_SELECT.equals(chartEventBusBean.getAction())) {
+                if (mChartLlTimeSelect != null) {
+                    mChartLlTimeSelect.setVisibility(View.GONE);
+                }
+                if (mToolbarHelper != null) {
+                    mToolbarHelper.hideShadow();
+                }
+            }
+        }
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     @Override
@@ -52,7 +86,7 @@ public class OverlayNormalChartActivity extends BaseChartActivity implements Vie
                 .setTitle(titleText)
                 .setTitleColor(getResources().getColor(R.color.chart_title_text))
                 .setBackgroundColor(getResources().getColor(R.color.base_transparent))
-                .setLeft(com.mobcb.base.R.drawable.base_ic_black_back, new View.OnClickListener() {
+                .setLeft(R.drawable.chart_icon_title_white_back, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (mChartLlTimeSelect != null && View.VISIBLE == mChartLlTimeSelect.getVisibility()) {
@@ -87,30 +121,38 @@ public class OverlayNormalChartActivity extends BaseChartActivity implements Vie
 
                     ArrayList<ChartDetailBean> list = new ArrayList<>(chartList.size());
                     list.addAll(chartList);
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelableArrayList(BaseNormalFragment.KEY_BUNDLE_CHART_LIST, list);
+
+                    //test
+                    NormalCombinedChartFragment test = new NormalCombinedChartFragment();
+                    test.setArguments(bundle);
+                    FragmentUtils.add(getSupportFragmentManager(), test, R.id.content);
+                    FragmentUtils.show(test);
+                    if (true) {
+                        return;
+                    }
                     if (ChartConstants.CHART_TYPE_BARS.equals(chartDetailBean.getChartType())) {
                         //柱状图
-                        Bundle bundle = new Bundle();
-                        bundle.putParcelableArrayList(BaseNormalFragment.KEY_BUNDLE_CHART_LIST, list);
                         NormalBarChartFragment normalBarChartFragment = new NormalBarChartFragment();
                         normalBarChartFragment.setArguments(bundle);
                         FragmentUtils.add(getSupportFragmentManager(), normalBarChartFragment, R.id.content);
                         FragmentUtils.show(normalBarChartFragment);
                     } else if (ChartConstants.CHART_TYPE_LINE.equals(chartDetailBean.getChartType())) {
-                        Bundle bundle = new Bundle();
-                        bundle.putParcelableArrayList(BaseNormalFragment.KEY_BUNDLE_CHART_LIST, list);
                         NormalLineChartFragment lineChartFragment = new NormalLineChartFragment();
                         lineChartFragment.setArguments(bundle);
                         FragmentUtils.add(getSupportFragmentManager(), lineChartFragment, R.id.content);
                         FragmentUtils.show(lineChartFragment);
-
                     } else if (ChartConstants.CHART_TYPE_PIE.equals(chartDetailBean.getChartType())) {
-                        Bundle bundle = new Bundle();
-                        bundle.putParcelableArrayList(BaseNormalFragment.KEY_BUNDLE_CHART_LIST, list);
                         NormalPieChartFragment pieChartFragment = new NormalPieChartFragment();
                         pieChartFragment.setArguments(bundle);
                         FragmentUtils.add(getSupportFragmentManager(), pieChartFragment, R.id.content);
                         FragmentUtils.show(pieChartFragment);
-
+                    } else if (ChartConstants.CHART_TYPE_COMBINED.equals(chartDetailBean.getChartType())) {
+                        NormalCombinedChartFragment normalCombinedChartFragment = new NormalCombinedChartFragment();
+                        normalCombinedChartFragment.setArguments(bundle);
+                        FragmentUtils.add(getSupportFragmentManager(), normalCombinedChartFragment, R.id.content);
+                        FragmentUtils.show(normalCombinedChartFragment);
                     }
                 }
 

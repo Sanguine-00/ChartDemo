@@ -199,7 +199,7 @@ public class BaseChartActivity extends BaseActivity {
      */
     protected void setSelectable() {
         if (mToolbarHelper != null) {
-            mToolbarHelper.setRight(R.drawable.chart_icon_setting, new View.OnClickListener() {
+            mToolbarHelper.setRight(R.drawable.chart_icon_title_setting, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (mChartLlTimeSelect != null) {

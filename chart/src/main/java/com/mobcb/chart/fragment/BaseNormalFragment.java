@@ -144,47 +144,4 @@ public class BaseNormalFragment extends Fragment {
             mLoadingDialog.dismiss();
         }
     }
-
-
-    protected ArrayList<Integer> getColors(int index) {
-
-        ArrayList<Integer> colors = new ArrayList<Integer>();
-
-        switch (index) {
-            case 0:
-                for (int c : ColorTemplate.PASTEL_COLORS)
-                    colors.add(c);
-
-                break;
-            case 1:
-                for (int c : ColorTemplate.JOYFUL_COLORS)
-                    colors.add(c);
-
-                break;
-            case 2:
-                for (int c : ColorTemplate.VORDIPLOM_COLORS)
-                    colors.add(c);
-
-                break;
-            case 3:
-                for (int c : ColorTemplate.COLORFUL_COLORS)
-                    colors.add(c);
-
-                break;
-            case 4:
-                for (int c : ColorTemplate.LIBERTY_COLORS)
-                    colors.add(c);
-                break;
-            case 5:
-                colors.add(ColorTemplate.getHoloBlue());
-                break;
-            default:
-                for (int c : ColorTemplate.MATERIAL_COLORS) {
-                    colors.add(c);
-                }
-                break;
-        }
-
-        return colors;
-    }
 }
